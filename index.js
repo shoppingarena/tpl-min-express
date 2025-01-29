@@ -6,7 +6,8 @@ const app = express()
 
 app.get('/', (req, res) => {
     res.send('Welcome Hello World!')
-    console.log(`Request object is: ${req.baseUrl}`)
+    console.log(`Request object recieved by server is: ${req}`)
+    console.log(`Response object send to client is: ${res}`)
 })
 
 

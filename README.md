@@ -75,4 +75,6 @@ Data type of representation data is determined via the header fields:
    |         | to the target resource.                         |       |
    +---------+-------------------------------------------------+-------+
 
+// CONTINUE HERE <https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.3>
+
 ## <https://datatracker.ietf.org/doc/html/rfc7234> - HTTP Caching
