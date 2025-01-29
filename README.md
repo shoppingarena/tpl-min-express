@@ -42,4 +42,37 @@ Data type of representation data is determined via the header fields:
 - Trailer
 - Transfer-Encoding
 
+#### Content Negotiation
+
+- **proactive**, where the
+   server selects the representation based upon the user agent's stated
+   preferences
+- **reactive**, where the server provides a
+   list of representations for the user agent to choose from
+- conditional content
+- active content
+
+## Request Methods
+
++---------+-------------------------------------------------+-------+
+   | Method  | Description                                     | Sec.  |
+   +---------+-------------------------------------------------+-------+
+   | GET     | Transfer a current representation of the target | 4.3.1 |
+   |         | resource.                                       |       |
+   | HEAD    | Same as GET, but only transfer the status line  | 4.3.2 |
+   |         | and header section.                             |       |
+   | POST    | Perform resource-specific processing on the     | 4.3.3 |
+   |         | request payload.                                |       |
+   | PUT     | Replace all current representations of the      | 4.3.4 |
+   |         | target resource with the request payload.       |       |
+   | DELETE  | Remove all current representations of the       | 4.3.5 |
+   |         | target resource.                                |       |
+   | CONNECT | Establish a tunnel to the server identified by  | 4.3.6 |
+   |         | the target resource.                            |       |
+   | OPTIONS | Describe the communication options for the      | 4.3.7 |
+   |         | target resource.                                |       |
+   | TRACE   | Perform a message loop-back test along the path | 4.3.8 |
+   |         | to the target resource.                         |       |
+   +---------+-------------------------------------------------+-------+
+
 ## <https://datatracker.ietf.org/doc/html/rfc7234> - HTTP Caching
