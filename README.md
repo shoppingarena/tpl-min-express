@@ -1,7 +1,14 @@
-# This is minimnal template for Express.js Server with type:module
+# This is not minimnal template for Express.js Server with type:module
+
+**Purpose of this repository is to practise simple Authentication.**
+>> [https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API]
+
+**WebAuthn** ( Web Authentication API ) is extention of **Credential Managment API**
 
 - I use pnpm package manager
 - .gitignore file is included
+- I use Pug template engine
+- I use Consolidate to use React as template engine
 
 ## <https://datatracker.ietf.org/doc/html/rfc7231> - HTTP Semantics and Content
 

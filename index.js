@@ -2,7 +2,7 @@ import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
-import 
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,6 +22,13 @@ app.get('/', (req, res) => {
     console.log(`Request object recieved by server is: ${res.req}`)
     console.log(`Response object send to client is: ${res}`)
 })
+
+app.get('/register', (req, res) => {
+    res.render('register')
+
+})
+
+
 
 
 const PORT = 3000

@@ -1,0 +1,14 @@
+include template-form
+
+doctype html
+html
+  head
+    title Form Example
+  body
+    h1 Registration Form
+    +formTemplate('/register', 'POST', [
+      { name: 'username', type: 'text', label: 'Username', placeholder: 'Enter your username', required: true },
+      { name: 'email', type: 'email', label: 'Email', placeholder: 'Enter your email', required: true },
+      { name: 'password', type: 'password', label: 'Password', placeholder: 'Enter your password', required: true },
+      { name: 'bio', type: 'textarea', label: 'Bio', placeholder: 'Tell us about yourself', required: false }
+    ])
