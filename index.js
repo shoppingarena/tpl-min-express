@@ -3,7 +3,7 @@ import path from 'path'
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 
-
+//TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -12,6 +12,7 @@ console.log('Directory name:', __dirname);
 const app = express()
 
 app.set('view engine', 'pug')
+
 
 // Set the directory for the views
 app.set('views', path.join(__dirname, 'server', 'views'));

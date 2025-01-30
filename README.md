@@ -7,7 +7,7 @@
 
 - I use pnpm package manager
 - .gitignore file is included
-- I use Pug template engine
+- I use Pug template engine >> [PUG-TEMPLATE-ENGINE.md](PUG-TEMPLATE-ENGINE.md)
 - I use Consolidate to use React as template engine
 
 ## <https://datatracker.ietf.org/doc/html/rfc7231> - HTTP Semantics and Content
