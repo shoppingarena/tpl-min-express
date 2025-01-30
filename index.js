@@ -1,7 +1,6 @@
 import express from 'express'
-import path from 'path'
 import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
+import path, { dirname } from 'node:path';
 
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
@@ -16,7 +15,7 @@ app.set('view engine', 'pug')
 
 // Set the directory for the views
 app.set('views', path.join(__dirname, 'server', 'views'));
-
+console.log(`Path.join is: ${path.join(__dirname, 'server', 'views')}`)
 
 app.get('/', (req, res) => {
     res.render('index', { title: 'Hey', message: 'Hello there!' })

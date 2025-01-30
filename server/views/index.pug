@@ -1,5 +1,12 @@
+doctype html
 html
     head 
-        title= title 
-    body 
-        h1= message
+        
+        script(src="https://unpkg.com/@tailwindcss/browser@4")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        title= title
+           
+    body
+        div.flex-wrap.justify-center.items-center.h-screen 
+            h1.text-3xl.font-bold.underline Express.js + Pug Template Engine + Tailwindcss
+
