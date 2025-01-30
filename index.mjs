@@ -28,6 +28,10 @@ app.get('/register', (req, res) => {
 
 })
 
+app.get('/page', (req, res) => {
+    res.render('page')
+})
+
 
 
 
