@@ -9,8 +9,11 @@ const __dirname = dirname(__filename);
 console.log('Directory name:', __dirname);
 
 const app = express()
-// request sends form-encoded data from html form
+// request sends form-encoded data from html form, Parses URL-encoded form data
 app.use(express.urlencoded({ extended: true }));
+// JSON API request, Parses JSON request bodies
+app.use(express.json());
+
 
 
 app.set('view engine', 'pug')
@@ -35,6 +38,9 @@ app.get('/register', (req, res) => {
 app.post('/register', (req, res) => {
     console.log(req.body); // Debugging
     const { username, email, password } = req.body
+    if (!username || !email || !password) {
+        return res.status(400).json({ error: 'All fields are required!' });
+    }
     res.send('Check your console for req.body output.')
     // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
 })
