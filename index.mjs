@@ -11,7 +11,8 @@ console.log('Directory name:', __dirname);
 const app = express()
 
 app.set('view engine', 'pug')
-
+// Disable Pug template caching
+app.locals.cache = false
 
 // Set the directory for the views
 app.set('views', path.join(__dirname, 'server', 'views'));
@@ -24,7 +25,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/register', (req, res) => {
-    res.render('register')
+    res.render('register', { title: 'Register', subtitle: 'Create your account with a password' })
 
 })
 
