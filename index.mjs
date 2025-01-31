@@ -9,6 +9,9 @@ const __dirname = dirname(__filename);
 console.log('Directory name:', __dirname);
 
 const app = express()
+// request sends form-encoded data from html form
+app.use(express.urlencoded({ extended: true }));
+
 
 app.set('view engine', 'pug')
 // Disable Pug template caching
@@ -27,6 +30,13 @@ app.get('/', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register', { title: 'Register', subtitle: 'Create your account with a password' })
 
+})
+
+app.post('/register', (req, res) => {
+    console.log(req.body); // Debugging
+    const { username, email, password } = req.body
+    res.send('Check your console for req.body output.')
+    // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
 })
 
 app.get('/page', (req, res) => {
