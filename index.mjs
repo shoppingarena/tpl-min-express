@@ -1,8 +1,12 @@
 import express from 'express'
 import { body, validationResult } from 'express-validator'
-
+import { initDB, newDB } from './server/db/new-db.mjs';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
+
+import { execute } from './server/db/sql.mjs';
+import { Console } from 'node:console';
+
 
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
@@ -16,7 +20,14 @@ app.use(express.urlencoded({ extended: true }));
 // JSON API request, Parses JSON request bodies
 app.use(express.json());
 
-
+// Create Database
+let db;
+initDB().then((initializedDB) => {
+    db = initializedDB;
+    console.log('Database and table initialized successfully.');
+}).catch((err) => {
+    console.error('Error initializing database:', err);
+});
 
 app.set('view engine', 'pug')
 // Disable Pug template caching
