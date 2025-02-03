@@ -41,29 +41,30 @@ app.post('/register',
     [
         body('username').trim().isLength({ min: 4 }),
         body('email').trim().isEmail(),
-        body('password').isLength({ min: 8 })
+        body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
     ],
     (req, res) => {
         const myRequestBody = JSON.stringify(req.body)
         console.log(`This is the request body: ${myRequestBody}`); // Debugging
-        const errors = validationResult(req)
-        if (errors.isEmpty()) {
-            res.send(`
-                    <script>
+        const result = validationResult(req)
+        if (result.isEmpty()) {
+            res.send('Check your console for req.body output.')
+            // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
+        } else {
+            const errors = result.array(); // Define the errors variable here
+            res.status(400).send(`
+                <script>
+                    window.onload = function() {
+                        const errors = ${JSON.stringify(errors)};
                         window.location.href = '/register'; // Redirect back to registration page
-                        alert('All fields are required!');
+                        alert('Validation errors:\\n' + errors.map(error => error.msg).join('\\n'));
                         
-                    </script>
-                    `);
-            return res.status(400).json({ errors: errors.array() });
+                    };</script>
+            `);
         }
-        const { username, email, password } = req.body
-        if (!username || !email || !password) {
-            return res.status(400).json({ error: 'All fields are required!' });
-        }
-        res.send('Check your console for req.body output.')
-        // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
+
     })
+
 
 app.get('/page', (req, res) => {
     res.render('page')
