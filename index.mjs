@@ -47,7 +47,7 @@ app.post('/register',
         const myRequestBody = JSON.stringify(req.body)
         console.log(`This is the request body: ${myRequestBody}`); // Debugging
         const errors = validationResult(req)
-        if (!errors.isEmpty()) {
+        if (errors.isEmpty()) {
             res.send(`
                     <script>
                         window.location.href = '/register'; // Redirect back to registration page
