@@ -54,13 +54,20 @@ app.post('/register',
         body('email').trim().isEmail(),
         body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
     ],
-    (req, res) => {
+    async (req, res) => {
         const myRequestBody = JSON.stringify(req.body)
         console.log(`This is the request body: ${myRequestBody}`); // Debugging
         const result = validationResult(req)
         if (result.isEmpty()) {
-            res.send('Check your console for req.body output.')
+            const { username, email, password } = req.body;
+            //res.send('Check your console for req.body output.')
             // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
+            try {
+                await execute(db, `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${password}')`);
+                res.send('User registered successfully.')
+            } catch (err) {
+                res.status(500).send('Error registering user.');
+            }
         } else {
             const errors = result.array(); // Define the errors variable here
             res.status(400).send(`
