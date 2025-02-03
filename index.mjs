@@ -1,4 +1,6 @@
 import express from 'express'
+import { body, validationResult } from 'express-validator'
+
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 
@@ -35,15 +37,33 @@ app.get('/register', (req, res) => {
 
 })
 
-app.post('/register', (req, res) => {
-    console.log(req.body); // Debugging
-    const { username, email, password } = req.body
-    if (!username || !email || !password) {
-        return res.status(400).json({ error: 'All fields are required!' });
-    }
-    res.send('Check your console for req.body output.')
-    // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
-})
+app.post('/register',
+    [
+        body('username').trim().isLength({ min: 4 }),
+        body('email').trim().isEmail(),
+        body('password').isLength({ min: 8 })
+    ],
+    (req, res) => {
+        const myRequestBody = JSON.stringify(req.body)
+        console.log(`This is the request body: ${myRequestBody}`); // Debugging
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            res.send(`
+                    <script>
+                        window.location.href = '/register'; // Redirect back to registration page
+                        alert('All fields are required!');
+                        
+                    </script>
+                    `);
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { username, email, password } = req.body
+        if (!username || !email || !password) {
+            return res.status(400).json({ error: 'All fields are required!' });
+        }
+        res.send('Check your console for req.body output.')
+        // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
+    })
 
 app.get('/page', (req, res) => {
     res.render('page')
