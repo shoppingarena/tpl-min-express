@@ -13,7 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "consolidate": "^1.0.4",
     "express": "^4.21.2",
-    "nodemon": "^3.1.9"
+    "express-validator": "^7.2.1",
+    "nodemon": "^3.1.9",
+    "pug": "^3.0.3",
+    "sqlite3": "^5.1.7"
   }
 }
