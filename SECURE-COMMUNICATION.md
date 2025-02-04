@@ -10,3 +10,4 @@ Without HTTPS, sensitive data (like passwords) sent through a POST request can b
 Never trust data sent from the client. Always validate and sanitize input on the server to prevent malicious input, such as SQL injection, XSS, or other attacks.
 
 - express-validator
+- bcrypt, hash password with saltRounds, compare password

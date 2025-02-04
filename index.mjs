@@ -1,11 +1,17 @@
 import express from 'express'
 import { body, validationResult } from 'express-validator'
+import bcrypt from 'bcrypt'
 import { initDB, newDB } from './server/db/new-db.mjs';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 
 import { execute, get } from './server/db/sql.mjs';
 import { Console } from 'node:console';
+import { console } from 'node:inspector';
+
+
+//Password saltRounds
+const saltRounds = 10
 
 
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
@@ -91,7 +97,8 @@ app.post('/register',
                         </script>
                     `);
                     } else {
-                        await execute(db, `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${password}')`);
+                        const hash = await bcrypt.hash(password, saltRounds)
+                        await execute(db, `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${hash}')`);
                         //res.send('User registered successfully.')
                         res.redirect('/home')
                     }
@@ -114,8 +121,58 @@ app.post('/register',
         }
 
     })
+app.get('/login', (req, res) => {
+    res.render('login', { title: 'Login' })
+})
+app.post('/login',
+    [
+        body('username').trim().isLength({ min: 4 }).withMessage('Username must be at least 4 characters long'),
+        body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
+    ],
+    async (req, res) => {
+        const { username, password } = req.body
+        //Validate Login inputs
+        const myRequestBody = JSON.stringify(req.body)
+        console.log(`This is the request body: ${myRequestBody}`); // Debugging
+        const result = validationResult(req)
+        if (result.isEmpty()) {
+
+            try {
+                //Fetch user from database
+                const user = await get(db, `SELECT * FROM users WHERE username = '${username}'`)
+                console.log('User retrieved from database:', user); // Debugging
+                if (!user) {
+                    console.log('LOGIN: Username does not exist', username)
+                    return res.status(400).send('Username does not exist.')
+                }
+                //Check if password is correct
+                const isPasswordCorrect = await bcrypt.compare(password, user.password)
+                if (!isPasswordCorrect) {
+                    console.log('LOGIN: Password is incorrect', password)
+                    return res.status(400).send('Password is incorrect.')
+                }
+                console.log('User logged in successfully.', username)
+                return res.redirect('/home')
 
 
+            } catch (err) {
+                console.error('Error logging in user:', err);
+                res.status(500).send('Error logging in user.');
+            }
+        } else {
+            const errors = result.array(); // Define the errors variable here
+            res.status(400).send(`
+                <script>
+                    window.onload = function() {
+                        const errors = ${JSON.stringify(errors)};
+                        alert('Validation errors:\\n' + errors.map(error => error.msg).join('\\n'));
+                        window.location.href = '/login'; // Redirect back to login page
+                    };
+                </script>
+            `);
+        }
+    }
+)
 app.get('/page', (req, res) => {
     res.render('page')
 })
