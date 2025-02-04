@@ -39,9 +39,13 @@ console.log(`Path.join is: ${path.join(__dirname, 'server', 'views')}`)
 
 app.get('/', (req, res) => {
     res.render('index', { title: 'Hey', message: 'Hello there!' })
-    console.log(`Request object recieved by server is: ${res.req}`)
-    console.log(`Response object send to client is: ${res}`)
+    //console.log(`Request object recieved by server is: ${res.req}`)
+    //console.log(`Response object send to client is: ${res}`)
 })
+
+app.get('/home', (req, res) => [
+    res.render('index', { title: 'Home' })
+])
 
 app.get('/register', (req, res) => {
     res.render('register', { title: 'Register', subtitle: 'Create your account with a password' })
@@ -50,8 +54,8 @@ app.get('/register', (req, res) => {
 
 app.post('/register',
     [
-        body('username').trim().isLength({ min: 4 }),
-        body('email').trim().isEmail(),
+        body('username').trim().isLength({ min: 4 }).withMessage('Username must be at least 4 characters long'),
+        body('email').trim().isEmail().withMessage('Invalid email address'),
         body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
     ],
     async (req, res) => {
@@ -88,7 +92,8 @@ app.post('/register',
                     `);
                     } else {
                         await execute(db, `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${password}')`);
-                        res.send('User registered successfully.')
+                        //res.send('User registered successfully.')
+                        res.redirect('/home')
                     }
                 }
             } catch (err) {
