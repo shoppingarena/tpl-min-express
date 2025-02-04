@@ -4,7 +4,7 @@ import { initDB, newDB } from './server/db/new-db.mjs';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 
-import { execute } from './server/db/sql.mjs';
+import { execute, get } from './server/db/sql.mjs';
 import { Console } from 'node:console';
 
 
@@ -63,9 +63,36 @@ app.post('/register',
             //res.send('Check your console for req.body output.')
             // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
             try {
-                await execute(db, `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${password}')`);
-                res.send('User registered successfully.')
+                // Check if the username already exists
+                const existingUser = await get(db, `SELECT * FROM users WHERE username = '${username}'`);
+                if (existingUser) {
+                    return res.status(400).send(`
+                            <script>
+                                window.onload = function() {
+                                    alert('Username already exists. Please choose a different username.');
+                                    window.location.href = '/register'; // Redirect back to registration page
+                                };
+                            </script>
+                        `);
+                } else {
+                    // Check if the email already exists
+                    const existingEmail = await get(db, `SELECT * FROM users WHERE email = '${email}'`);
+                    if (existingEmail) {
+                        return res.status(400).send(`
+                        <script>
+                            window.onload = function() {
+                            alert('Email already exists. Please use a different email.');
+                            window.location.href = '/register'; // Redirect back to registration page
+                            };
+                        </script>
+                    `);
+                    } else {
+                        await execute(db, `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${password}')`);
+                        res.send('User registered successfully.')
+                    }
+                }
             } catch (err) {
+                console.error('Error registering user:', err);
                 res.status(500).send('Error registering user.');
             }
         } else {
@@ -88,8 +115,15 @@ app.get('/page', (req, res) => {
     res.render('page')
 })
 
-
-
+app.delete('/delete', async (req, res) => {
+    const { id } = req.body;
+    try {
+        await execute(db, `DELETE FROM users WHERE id = ${id}`);
+        res.send('User deleted successfully.');
+    } catch (err) {
+        console.error('Error deleting user:', err);
+    }
+})
 
 const PORT = 3000
 app.listen(PORT, () => {
