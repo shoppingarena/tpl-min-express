@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 
 import { execute, get } from './server/db/sql.mjs';
-import { Console } from 'node:console';
-import { console } from 'node:inspector';
+import chalk from 'chalk'
+
 
 
 //Password saltRounds
@@ -54,8 +54,8 @@ app.get('/home', (req, res) => [
 ])
 
 app.get('/register', (req, res) => {
-    res.render('register', { title: 'Register', subtitle: 'Create your account with a password' })
-
+    console.log('route to register page')
+    res.render('register', { title: 'Register', subtitle: 'Create account with a password' })
 })
 
 app.post('/register',
@@ -121,19 +121,23 @@ app.post('/register',
         }
 
     })
+
 app.get('/login', (req, res) => {
     res.render('login', { title: 'Login' })
 })
+
 app.post('/login',
     [
         body('username').trim().isLength({ min: 4 }).withMessage('Username must be at least 4 characters long'),
         body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
     ],
     async (req, res) => {
+        console.log('DEBUG: Validate logins..');
+
         const { username, password } = req.body
         //Validate Login inputs
         const myRequestBody = JSON.stringify(req.body)
-        console.log(`This is the request body: ${myRequestBody}`); // Debugging
+        console.log(`Submit Form request body: ${myRequestBody}`); // Debugging
         const result = validationResult(req)
         if (result.isEmpty()) {
 
@@ -142,17 +146,33 @@ app.post('/login',
                 const user = await get(db, `SELECT * FROM users WHERE username = '${username}'`)
                 console.log('User retrieved from database:', user); // Debugging
                 if (!user) {
-                    console.log('LOGIN: Username does not exist', username)
-                    return res.status(400).send('Username does not exist.')
+                    console.log('LOGIN: Username does not exist:', username);
+                    //return res.status(401).send('Invalid username or password.');
+                    //REDIRECT TO LOGIN
+                    //return res.redirect(302, '/login')// Invalid username or password
+                    return res.status(302).send(`
+                            <script>
+                                window.onload = function() {
+                                    alert('Invalid username or password.');
+                                    window.location.href = '/login'; // Redirect back to login
+                                };
+                            </script>
+                        `);
                 }
+
+                console.log('DEBUG: Checking password...');
+
                 //Check if password is correct
                 const isPasswordCorrect = await bcrypt.compare(password, user.password)
                 if (!isPasswordCorrect) {
-                    console.log('LOGIN: Password is incorrect', password)
+                    console.log(chalk.red('LOGIN: Password is incorrect.', password))
                     return res.status(400).send('Password is incorrect.')
                 }
-                console.log('User logged in successfully.', username)
-                return res.redirect('/home')
+
+                console.log('Error comparing password:')
+                return res.status(500).send('Internal Server Error')
+                //.redirect('/home')
+
 
 
             } catch (err) {
