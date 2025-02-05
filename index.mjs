@@ -1,15 +1,19 @@
 import express from 'express'
-import { body, validationResult } from 'express-validator'
+
 import bcrypt from 'bcrypt'
 import { initDB, newDB } from './server/db/new-db.mjs';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
-
+import crypto from 'node:crypto'
 import { execute, get } from './server/db/sql.mjs';
 import chalk from 'chalk'
+import getRoute from './server/getRouter.mjs'
+import postRoute from './server/postRouter.mjs'
 
 
-
+//Generate a secret key (must be stored securely in .env in production)
+const secretKey = crypto.randomBytes(32)
+console.log(chalk.green('Secret key: '), secretKey.toString('hex'))
 //Password saltRounds
 const saltRounds = 10
 
@@ -43,159 +47,10 @@ app.locals.cache = false
 app.set('views', path.join(__dirname, 'server', 'views'));
 console.log(`Path.join is: ${path.join(__dirname, 'server', 'views')}`)
 
-app.get('/', (req, res) => {
-    res.render('index', { title: 'Hey', message: 'Hello there!' })
-    //console.log(`Request object recieved by server is: ${res.req}`)
-    //console.log(`Response object send to client is: ${res}`)
-})
 
-app.get('/home', (req, res) => [
-    res.render('index', { title: 'Home' })
-])
-
-app.get('/register', (req, res) => {
-    console.log('route to register page')
-    res.render('register', { title: 'Register', subtitle: 'Create account with a password' })
-})
-
-app.post('/register',
-    [
-        body('username').trim().isLength({ min: 4 }).withMessage('Username must be at least 4 characters long'),
-        body('email').trim().isEmail().withMessage('Invalid email address'),
-        body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
-    ],
-    async (req, res) => {
-        const myRequestBody = JSON.stringify(req.body)
-        console.log(`This is the request body: ${myRequestBody}`); // Debugging
-        const result = validationResult(req)
-        if (result.isEmpty()) {
-            const { username, email, password } = req.body;
-            //res.send('Check your console for req.body output.')
-            // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
-            try {
-                // Check if the username already exists
-                const existingUser = await get(db, `SELECT * FROM users WHERE username = '${username}'`);
-                if (existingUser) {
-                    return res.status(400).send(`
-                            <script>
-                                window.onload = function() {
-                                    alert('Username already exists. Please choose a different username.');
-                                    window.location.href = '/register'; // Redirect back to registration page
-                                };
-                            </script>
-                        `);
-                } else {
-                    // Check if the email already exists
-                    const existingEmail = await get(db, `SELECT * FROM users WHERE email = '${email}'`);
-                    if (existingEmail) {
-                        return res.status(400).send(`
-                        <script>
-                            window.onload = function() {
-                            alert('Email already exists. Please use a different email.');
-                            window.location.href = '/register'; // Redirect back to registration page
-                            };
-                        </script>
-                    `);
-                    } else {
-                        const hash = await bcrypt.hash(password, saltRounds)
-                        await execute(db, `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${hash}')`);
-                        //res.send('User registered successfully.')
-                        res.redirect('/home')
-                    }
-                }
-            } catch (err) {
-                console.error('Error registering user:', err);
-                res.status(500).send('Error registering user.');
-            }
-        } else {
-            const errors = result.array(); // Define the errors variable here
-            res.status(400).send(`
-                <script>
-                    window.onload = function() {
-                        const errors = ${JSON.stringify(errors)};
-                        window.location.href = '/register'; // Redirect back to registration page
-                        alert('Validation errors:\\n' + errors.map(error => error.msg).join('\\n'));
-                        
-                    };</script>
-            `);
-        }
-
-    })
-
-app.get('/login', (req, res) => {
-    res.render('login', { title: 'Login' })
-})
-
-app.post('/login',
-    [
-        body('username').trim().isLength({ min: 4 }).withMessage('Username must be at least 4 characters long'),
-        body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
-    ],
-    async (req, res) => {
-        console.log('DEBUG: Validate logins..');
-
-        const { username, password } = req.body
-        //Validate Login inputs
-        const myRequestBody = JSON.stringify(req.body)
-        console.log(`Submit Form request body: ${myRequestBody}`); // Debugging
-        const result = validationResult(req)
-        if (result.isEmpty()) {
-
-            try {
-                //Fetch user from database
-                const user = await get(db, `SELECT * FROM users WHERE username = '${username}'`)
-                console.log('User retrieved from database:', user); // Debugging
-                if (!user) {
-                    console.log('LOGIN: Username does not exist:', username);
-                    //return res.status(401).send('Invalid username or password.');
-                    //REDIRECT TO LOGIN
-                    //return res.redirect(302, '/login')// Invalid username or password
-                    return res.status(302).send(`
-                            <script>
-                                window.onload = function() {
-                                    alert('Invalid username or password.');
-                                    window.location.href = '/login'; // Redirect back to login
-                                };
-                            </script>
-                        `);
-                }
-
-                console.log('DEBUG: Checking password...');
-
-                //Check if password is correct
-                const isPasswordCorrect = await bcrypt.compare(password, user.password)
-                if (!isPasswordCorrect) {
-                    console.log(chalk.red('LOGIN: Password is incorrect.', password))
-                    return res.status(400).send('Password is incorrect.')
-                }
-
-                console.log('Error comparing password:')
-                return res.status(500).send('Internal Server Error')
-                //.redirect('/home')
-
-
-
-            } catch (err) {
-                console.error('Error logging in user:', err);
-                res.status(500).send('Error logging in user.');
-            }
-        } else {
-            const errors = result.array(); // Define the errors variable here
-            res.status(400).send(`
-                <script>
-                    window.onload = function() {
-                        const errors = ${JSON.stringify(errors)};
-                        alert('Validation errors:\\n' + errors.map(error => error.msg).join('\\n'));
-                        window.location.href = '/login'; // Redirect back to login page
-                    };
-                </script>
-            `);
-        }
-    }
-)
-app.get('/page', (req, res) => {
-    res.render('page')
-})
+//All imported routes are here
+app.use(getRoute)
+app.use(postRoute)
 
 app.delete('/delete', async (req, res) => {
     const { id } = req.body;
