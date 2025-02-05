@@ -176,3 +176,42 @@ app.use('/admin', adminMiddlewares, (req, res) => {
 });
 
 ```
+
+## EXEMPLE Applying Dynamic Middleware to Routes
+
+```js
+import express from 'express';
+
+const app = express();
+
+app.use(authMiddleware); // Apply authentication globally
+
+// Public route (no authorization required)
+app.get('/', (req, res) => {
+  res.send('Public route');
+});
+
+// Protected route (only for logged-in users)
+app.get('/profile', (req, res) => {
+  res.send(`Hello, ${req.user.username}`);
+});
+
+// Admin-only route
+app.get('/admin', authorize(['admin']), (req, res) => {
+  res.send('Welcome, Admin!');
+});
+
+// Moderator & Admin can access
+app.get('/moderate', authorize(['admin', 'moderator']), (req, res) => {
+  res.send('Moderation panel');
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+
+```
+
+### Why Use Dynamic Middleware?
+
+- Scalability → Easily add/remove roles without changing route logic.
+- Security → Prevent unauthorized users from accessing sensitive data.
+- Flexibility → Can support multiple user types and permissions dynamically.

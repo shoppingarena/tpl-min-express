@@ -1,7 +1,30 @@
 //All basic POST requests are handled here
 import express from 'express'
 import { body, validationResult } from 'express-validator'
+import { SignJWT } from 'jose'
+import { execute, get } from '../server/db/sql.mjs'
+import { initDB, newDB } from '../server/db/new-db.mjs';
+import bcrypt from 'bcrypt'
+import crypto from 'node:crypto'
+import chalk from 'chalk'
+
 const postRoute = express.Router()
+
+// Create Database
+let db;
+initDB().then((initializedDB) => {
+    db = initializedDB;
+    console.log('Database and table initialized successfully.');
+}).catch((err) => {
+    console.error('Error initializing database:', err);
+});
+
+//Password saltRounds
+const saltRounds = 10
+
+//Generate a secret key (must be stored securely in .env in production)
+const secretKey = crypto.randomBytes(32)
+console.log(chalk.green('Secret key: '), secretKey.toString('hex'))
 
 postRoute.post('/register',
     [
@@ -44,8 +67,20 @@ postRoute.post('/register',
                     } else {
                         const hash = await bcrypt.hash(password, saltRounds)
                         await execute(db, `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${hash}')`);
-                        //res.send('User registered successfully.')
-                        res.redirect('/home')
+                        //Create JWT token
+                        const jwt = await new SignJWT({ username, email })
+                            .setProtectedHeader({ alg: 'HS256' })
+                            .setIssuedAt()
+                            .setExpirationTime('2h')
+                            .sign(secretKey)
+                        /* After succesfull registeration, Return JWT token to client.
+                            User can use this token for authenticated requests.
+                            201 status code means "Created"
+                            redirect handle frontend script
+                            Important! to send JWT token after registration.
+                        */
+                        return res.status(201).json({ message: 'Registration successful', token: jwt, redirect: '/home' });
+                        //res.redirect('/home')
                     }
                 }
             } catch (err) {

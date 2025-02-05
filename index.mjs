@@ -1,21 +1,18 @@
 import express from 'express'
 
-import bcrypt from 'bcrypt'
-import { initDB, newDB } from './server/db/new-db.mjs';
+// import bcrypt from 'bcrypt' => postRouter.mjs
+// import { initDB, newDB } from './server/db/new-db.mjs'; => postRouter.mjs
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
-import crypto from 'node:crypto'
-import { execute, get } from './server/db/sql.mjs';
-import chalk from 'chalk'
+// import crypto from 'node:crypto' => postRouter.mjs
+// import { execute, get } from './server/db/sql.mjs'; => postRouter.mjs
+// import chalk from 'chalk' => postRouter.mjs
 import getRoute from './server/getRouter.mjs'
 import postRoute from './server/postRouter.mjs'
 
 
-//Generate a secret key (must be stored securely in .env in production)
-const secretKey = crypto.randomBytes(32)
-console.log(chalk.green('Secret key: '), secretKey.toString('hex'))
-//Password saltRounds
-const saltRounds = 10
+
+
 
 
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
@@ -30,14 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // JSON API request, Parses JSON request bodies
 app.use(express.json());
 
-// Create Database
-let db;
-initDB().then((initializedDB) => {
-    db = initializedDB;
-    console.log('Database and table initialized successfully.');
-}).catch((err) => {
-    console.error('Error initializing database:', err);
-});
+
 
 app.set('view engine', 'pug')
 // Disable Pug template caching
