@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon index.mjs",
     "start": "node index.mjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test"
   },
   "keywords": [],
   "author": "",
@@ -22,5 +22,9 @@
     "nodemon": "^3.1.9",
     "pug": "^3.0.3",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "@types/node": "^22.13.1"
   }
 }
