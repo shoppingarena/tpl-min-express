@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  packages/auth-service:
     dependencies:
       bcrypt:
         specifier: ^5.1.1
@@ -42,6 +44,8 @@ importers:
       '@types/node':
         specifier: ^22.13.1
         version: 22.13.1
+
+  packages/landingpage: {}
 
 packages:
 
