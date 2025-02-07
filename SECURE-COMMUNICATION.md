@@ -11,3 +11,10 @@ Never trust data sent from the client. Always validate and sanitize input on the
 
 - express-validator
 - bcrypt, hash password with saltRounds, compare password
+- jwt token is created during registration in backend and sent to frontend
+- secure cookie is used to store jwt token in frontend
+
+Send the JWT securely from the server.
+Store the JWT securely in the browser.
+Use the JWT for authenticated requests after login.
+Verify the JWT on the client side and redirect users.

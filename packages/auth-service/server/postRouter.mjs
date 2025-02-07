@@ -7,6 +7,7 @@ import { initDB, newDB } from '../server/db/new-db.mjs';
 import bcrypt from 'bcrypt'
 import crypto from 'node:crypto'
 import chalk from 'chalk'
+import cookie from 'cookie'
 
 const postRoute = express.Router()
 
@@ -79,7 +80,16 @@ postRoute.post('/register',
                             redirect handle frontend script
                             Important! to send JWT token after registration.
                         */
-                        return res.status(201).json({ message: 'Registration successful', token: jwt, redirect: '/home' });
+                        //SECURE WAY TO SEND JWT TOKEN TO CLIENT AFTER REGISTRATION WITH SECURE COOKIE
+                        res.setHeader('Set-Cookie', cookie.serialize('token', jwt, {
+                            httpOnly: true, // Prevents JavaScript access (XSS Protection)
+                            secure: false, // Set to true in production (HTTPS only
+                            sameSite: 'strict', // Prevents CSRF attacks
+                            maxAge: 60 * 60 * 2, // Token expiration time in seconds (2 hours)
+                            path: '/', // Cookie path available for all routes
+                        }))
+                        // return res.status(201).json({ message: 'Registration successful', token: jwt, redirect: '/home' });
+                        return res.status(201).json({ message: 'Registration successful', redirect: '/home' })
                         //res.redirect('/home')
                     }
                 }
