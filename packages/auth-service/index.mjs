@@ -1,5 +1,5 @@
 import express from 'express'
-
+import helmet from 'helmet'
 // import bcrypt from 'bcrypt' => postRouter.mjs
 // import { initDB, newDB } from './server/db/new-db.mjs'; => postRouter.mjs
 import { fileURLToPath } from 'node:url';
@@ -22,6 +22,8 @@ const __dirname = dirname(__filename);
 console.log('Directory name:', __dirname);
 
 const app = express()
+// SECURE EXPRESS APP BY SETTING VARIOUS HTTP HEADERS
+app.use(helmet())
 // request sends form-encoded data from html form, Parses URL-encoded form data
 app.use(express.urlencoded({ extended: true }));
 // JSON API request, Parses JSON request bodies

@@ -35,39 +35,39 @@ postRoute.post('/register',
     ],
     async (req, res) => {
         const myRequestBody = JSON.stringify(req.body)
-        console.log(`This is the request body: ${myRequestBody}`); // Debugging
+        console.log(`This is the request body:`); // Debugging
+        console.dir(myRequestBody)
         const result = validationResult(req)
         if (result.isEmpty()) {
             const { username, email, password } = req.body;
             //res.send('Check your console for req.body output.')
-            // console.log(`Username: ${username}, Email: ${email}, Password: ${password}`)
+            // console.log(`Username: ${ username }, Email: ${ email }, Password: ${ password }`)
             try {
                 // Check if the username already exists
                 const existingUser = await get(db, `SELECT * FROM users WHERE username = '${username}'`);
                 if (existingUser) {
                     return res.status(400).send(`
-                            <script>
-                                window.onload = function() {
-                                    alert('Username already exists. Please choose a different username.');
-                                    window.location.href = '/register'; // Redirect back to registration page
-                                };
-                            </script>
-                        `);
+        < script >
+        window.onload = function () {
+            alert('Username already exists. Please choose a different username.');
+            window.location.href = '/register'; // Redirect back to registration page
+        };
+                            </script >
+            `);
                 } else {
                     // Check if the email already exists
                     const existingEmail = await get(db, `SELECT * FROM users WHERE email = '${email}'`);
                     if (existingEmail) {
                         return res.status(400).send(`
-                        <script>
-                            window.onload = function() {
-                            alert('Email already exists. Please use a different email.');
-                            window.location.href = '/register'; // Redirect back to registration page
-                            };
-                        </script>
-                    `);
+            < script >
+            window.onload = function() {
+                alert('Email already exists. Please use a different email.');
+                window.location.href = '/register'; // Redirect back to registration page
+            };
+                        </script >
+            `);
                     } else {
                         const hash = await bcrypt.hash(password, saltRounds)
-                        await execute(db, `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${hash}')`);
                         //Create JWT token
                         const jwt = await new SignJWT({ username, email })
                             .setProtectedHeader({ alg: 'HS256' })
@@ -80,6 +80,8 @@ postRoute.post('/register',
                             redirect handle frontend script
                             Important! to send JWT token after registration.
                         */
+                        await execute(db, `INSERT INTO users(username, email, password, jwt) VALUES('${username}', '${email}', '${hash}', '${jwt}')`)
+
                         //SECURE WAY TO SEND JWT TOKEN TO CLIENT AFTER REGISTRATION WITH SECURE COOKIE
                         res.setHeader('Set-Cookie', cookie.serialize('token', jwt, {
                             httpOnly: true, // Prevents JavaScript access (XSS Protection)
@@ -100,14 +102,15 @@ postRoute.post('/register',
         } else {
             const errors = result.array(); // Define the errors variable here
             res.status(400).send(`
-                <script>
-                    window.onload = function() {
-                        const errors = ${JSON.stringify(errors)};
-                        window.location.href = '/register'; // Redirect back to registration page
-                        alert('Validation errors:\\n' + errors.map(error => error.msg).join('\\n'));
-                        
-                    };</script>
-            `);
+            < script >
+            window.onload = function() {
+                const errors = ${JSON.stringify(errors)
+                };
+        window.location.href = '/register'; // Redirect back to registration page
+        alert('Validation errors:\\n' + errors.map(error => error.msg).join('\\n'));
+
+    };</script >
+        `);
         }
 
     })
@@ -123,7 +126,7 @@ postRoute.post('/login',
         const { username, password } = req.body
         //Validate Login inputs
         const myRequestBody = JSON.stringify(req.body)
-        console.log(`Submit Form request body: ${myRequestBody}`); // Debugging
+        console.log(`Submit Form request body: ${myRequestBody} `); // Debugging
         const result = validationResult(req)
         if (result.isEmpty()) {
 
@@ -137,13 +140,13 @@ postRoute.post('/login',
                     //REDIRECT TO LOGIN
                     //return res.redirect(302, '/login')// Invalid username or password
                     return res.status(302).send(`
-                            <script>
-                                window.onload = function() {
-                                    alert('Invalid username or password.');
-                                    window.location.href = '/login'; // Redirect back to login
-                                };
-                            </script>
-                        `);
+    < script >
+    window.onload = function() {
+        alert('Invalid username or password.');
+        window.location.href = '/login'; // Redirect back to login
+    };
+                            </script >
+    `);
                 }
 
                 console.log('DEBUG: Checking password...');
@@ -168,14 +171,15 @@ postRoute.post('/login',
         } else {
             const errors = result.array(); // Define the errors variable here
             res.status(400).send(`
-                <script>
-                    window.onload = function() {
-                        const errors = ${JSON.stringify(errors)};
-                        alert('Validation errors:\\n' + errors.map(error => error.msg).join('\\n'));
-                        window.location.href = '/login'; // Redirect back to login page
+    < script >
+    window.onload = function() {
+        const errors = ${JSON.stringify(errors)
+                };
+alert('Validation errors:\\n' + errors.map(error => error.msg).join('\\n'));
+window.location.href = '/login'; // Redirect back to login page
                     };
-                </script>
-            `);
+                </script >
+    `);
         }
     }
 )
