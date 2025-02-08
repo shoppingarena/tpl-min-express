@@ -3,6 +3,16 @@
 **Purpose of this repository is to practise simple Authentication.**
 >> [https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API]
 
+## This is monorepo for practise with some subprojects
+
+### Subprojects are in  packages/ directory
+
+Subprojects:
+
+- [Default project packages/auth-service](./packages/auth-service/)
+- [LandingPage](./packages/landingpage/)
+- [PLAYWRIGHT](./packages/playwright/)
+
 **WebAuthn** ( Web Authentication API ) is extention of **Credential Managment API**
 
 - I use pnpm package manager

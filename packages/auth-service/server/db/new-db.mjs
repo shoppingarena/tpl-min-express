@@ -22,10 +22,14 @@ export const initDB = async () => {
         // Ensure the users table exists
         await execute(db, `
             CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY,
                 username TEXT NOT NULL UNIQUE,
                 email TEXT NOT NULL UNIQUE,
-                password TEXT NOT NULL
+                password TEXT NOT NULL,
+                jwt TEXT NOT NULL UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+                
         `);
         console.log('Table created successfully');
         return db;
