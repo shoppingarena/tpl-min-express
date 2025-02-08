@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 // JSON API request, Parses JSON request bodies
 app.use(express.json());
 
-
+app.use('/static', express.static(path.join(__dirname, 'static')))
 
 app.set('view engine', 'pug')
 // Disable Pug template caching

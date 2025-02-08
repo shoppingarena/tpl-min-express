@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tailwindcss/cli": "^4.0.4",
     "bcrypt": "^5.1.1",
     "chalk": "^5.4.1",
     "consolidate": "^1.0.4",
