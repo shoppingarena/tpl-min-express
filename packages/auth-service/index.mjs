@@ -9,6 +9,7 @@ import path, { dirname } from 'node:path';
 // import chalk from 'chalk' => postRouter.mjs
 import getRoute from './server/getRouter.mjs'
 import postRoute from './server/postRouter.mjs'
+import tailwindcss from 'tailwindcss'
 
 
 
