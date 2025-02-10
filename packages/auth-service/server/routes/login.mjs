@@ -2,17 +2,17 @@
 import express from 'express'
 import { body, validationResult } from 'express-validator'
 import { SignJWT } from 'jose'
-import { execute, get } from '../server/db/sql.mjs'
-import { initDB, newDB } from '../server/db/new-db.mjs';
+import { execute, get } from '../db/sql.mjs'
+import { initDB, newDB } from '../db/new-db.mjs';
 import bcrypt from 'bcrypt'
 import crypto from 'node:crypto'
 import chalk from 'chalk'
 import cookie from 'cookie'
 
-const login = express.Router()
+const loginRoute = express.Router()
 
 
-postRoute.post('/login',
+loginRoute.post('/login',
     [
         body('username').trim().isLength({ min: 4 }).withMessage('Username must be at least 4 characters long'),
         body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
@@ -80,3 +80,4 @@ window.location.href = '/login'; // Redirect back to login page
         }
     }
 )
+export default loginRoute
