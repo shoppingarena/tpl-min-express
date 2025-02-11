@@ -1,5 +1,6 @@
 //All basic POST requests are handled here
 import express from 'express'
+import multer from 'multer'
 import { body, validationResult } from 'express-validator'
 import { SignJWT } from 'jose'
 import { execute, get } from '../db/sql.mjs'
@@ -27,13 +28,16 @@ const saltRounds = 10
 const secretKey = crypto.randomBytes(32)
 console.log(chalk.green('Secret key: '), secretKey.toString('hex'))
 
-registerRoute.post('/register',
+const upload = multer()
+
+registerRoute.post('/register', upload.none(),
     [
         body('username').trim().isLength({ min: 4 }).withMessage('Username must be at least 4 characters long'),
         body('email').trim().isEmail().withMessage('Invalid email address'),
         body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
     ],
     async (req, res) => {
+        console.log()
         const myRequestBody = JSON.stringify(req.body)
         console.log(`This is the request body:`); // Debugging
         console.dir(myRequestBody)
@@ -46,26 +50,28 @@ registerRoute.post('/register',
                 // Check if the username already exists
                 const existingUser = await get(db, `SELECT * FROM users WHERE username = '${username}'`);
                 if (existingUser) {
-                    return res.status(400).send(`
+                    return res.status(400).json({ message: 'Username already exists. Please choose a different username.' })
+                    /* send(`
         < script >
         window.onload = function () {
             alert('Username already exists. Please choose a different username.');
             window.location.href = '/register'; // Redirect back to registration page
         };
                             </script >
-            `);
+            `); */
                 } else {
                     // Check if the email already exists
                     const existingEmail = await get(db, `SELECT * FROM users WHERE email = '${email}'`);
                     if (existingEmail) {
-                        return res.status(400).send(`
+                        return res.status(400).json({ message: 'Email already exists. Please use a different email.' })
+                        /*send(`
             < script >
             window.onload = function() {
                 alert('Email already exists. Please use a different email.');
                 window.location.href = '/register'; // Redirect back to registration page
             };
                         </script >
-            `);
+            `);*/
                     } else {
                         const hash = await bcrypt.hash(password, saltRounds)
                         //Create JWT token

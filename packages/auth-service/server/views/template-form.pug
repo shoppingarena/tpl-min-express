@@ -1,7 +1,9 @@
-mixin formTemplate(action, method, fields)
+mixin formTemplate(action, method, id, fields)
   h1.mt-5.text-center.text-2xl.leading-9.font-bold.tracking-tight.text-sky-500= title
   h2.mb-2.text-sky-500= subtitle
-  form(action=action, method=method, class="bg-sky-100 p-6 rounded-lg shadow-md w-full max-w-md mx-auto")
+  div.flex
+      p#errorMessage.error-message.text-red-500.hidden Invalid username or password
+  form(action=action, method=method, id=id, class="bg-sky-100 p-6 rounded-lg shadow-md w-full max-w-md mx-auto")
     each field in fields
       .form-group.mb-4
         if field.label

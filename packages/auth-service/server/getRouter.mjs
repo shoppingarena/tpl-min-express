@@ -25,7 +25,7 @@ getRoute.get('/home', (req, res) => [
 // Define the register page route
 getRoute.get('/register', (req, res) => {
     const cesta = req.baseUrl
-    console.log(req.baseUrl)
+    console.log(cesta)
     console.log(`middleware getRoute.get ${cesta}`)
     res.render('register', { title: 'Register', subtitle: 'Create account with a password' })
 })

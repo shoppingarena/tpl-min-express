@@ -7,8 +7,6 @@ html
     include ./header.pug
     
     div.flex.flex-col.flex-wrap.max-w-sm.justify-center.items-center.h-screen.mx-auto    
-      +formTemplate('/login', 'POST', [
+      +formTemplate('/login', 'POST','Login', [
         { name: 'username', id:'username', type: 'text', label: 'username', placeholder: 'Enter your username', required: true, autocomplete:'on' },
-        { name: 'password', id:'password', type: 'password', label: 'password', placeholder: 'Enter your password', required: true },
-        
-      ])
+        { name: 'password', id:'password', type: 'password', label: 'password', placeholder: 'Enter your password', required: true }])
