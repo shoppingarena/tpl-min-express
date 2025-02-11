@@ -4,7 +4,7 @@ import multer from 'multer'
 import { body, validationResult } from 'express-validator'
 import { SignJWT } from 'jose'
 import { execute, get } from '../db/sql.mjs'
-import { initDB, newDB } from '../db/new-db.mjs';
+import db from '../db/db.mjs';
 import bcrypt from 'bcrypt'
 import crypto from 'node:crypto'
 import chalk from 'chalk'
@@ -13,13 +13,6 @@ import cookie from 'cookie'
 const registerRoute = express.Router()
 
 // Create Database
-let db;
-initDB().then((initializedDB) => {
-    db = initializedDB;
-    console.log('Database and table initialized successfully.');
-}).catch((err) => {
-    console.error('Error initializing database:', err);
-});
 
 //Password saltRounds
 const saltRounds = 10
@@ -37,41 +30,24 @@ registerRoute.post('/register', upload.none(),
         body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
     ],
     async (req, res) => {
-        console.log()
-        const myRequestBody = JSON.stringify(req.body)
-        console.log(`This is the request body:`); // Debugging
-        console.dir(myRequestBody)
         const result = validationResult(req)
-        if (result.isEmpty()) {
+        if (!result.isEmpty()) {
+            const errors = result.array()
+            return res.status(400).json({ message: "Validation errors:\n" + errors.map(error => error.msg).join("\n") })
+        } else {
             const { username, email, password } = req.body;
-            //res.send('Check your console for req.body output.')
-            // console.log(`Username: ${ username }, Email: ${ email }, Password: ${ password }`)
             try {
                 // Check if the username already exists
                 const existingUser = await get(db, `SELECT * FROM users WHERE username = '${username}'`);
                 if (existingUser) {
                     return res.status(400).json({ message: 'Username already exists. Please choose a different username.' })
-                    /* send(`
-        < script >
-        window.onload = function () {
-            alert('Username already exists. Please choose a different username.');
-            window.location.href = '/register'; // Redirect back to registration page
-        };
-                            </script >
-            `); */
+
                 } else {
                     // Check if the email already exists
                     const existingEmail = await get(db, `SELECT * FROM users WHERE email = '${email}'`);
                     if (existingEmail) {
                         return res.status(400).json({ message: 'Email already exists. Please use a different email.' })
-                        /*send(`
-            < script >
-            window.onload = function() {
-                alert('Email already exists. Please use a different email.');
-                window.location.href = '/register'; // Redirect back to registration page
-            };
-                        </script >
-            `);*/
+
                     } else {
                         const hash = await bcrypt.hash(password, saltRounds)
                         //Create JWT token
@@ -106,19 +82,7 @@ registerRoute.post('/register', upload.none(),
                 console.error('Error registering user:', err);
                 res.status(500).send('Error registering user.');
             }
-        } else {
-            const errors = result.array(); // Define the errors variable here
-            res.status(400).send(`
-            < script >
-            window.onload = function() {
-                const errors = ${JSON.stringify(errors)
-                };
-        window.location.href = '/register'; // Redirect back to registration page
-        alert('Validation errors:\\n' + errors.map(error => error.msg).join('\\n'));
-
-    };</script >
-        `);
         }
-
-    })
+    }
+)
 export default registerRoute

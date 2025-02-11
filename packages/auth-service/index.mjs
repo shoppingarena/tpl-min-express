@@ -1,7 +1,7 @@
 import express from 'express'
-import helmet from 'helmet'
+import helmet, { crossOriginResourcePolicy } from 'helmet'
 // import bcrypt from 'bcrypt' => postRouter.mjs
-// import { initDB, newDB } from './server/db/new-db.mjs'; => postRouter.mjs
+import db from './server/db/db.mjs'
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 // import crypto from 'node:crypto' => postRouter.mjs
@@ -10,11 +10,6 @@ import path, { dirname } from 'node:path';
 import getRoute from './server/getRouter.mjs'
 import postRoute from './server/routes/postRouter.mjs'
 import tailwindcss from 'tailwindcss'
-
-
-
-
-
 
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
@@ -40,6 +35,10 @@ app.locals.cache = false
 app.set('views', path.join(__dirname, 'server', 'views'));
 console.log(`Path.join is: ${path.join(__dirname, 'server', 'views')}`)
 
+//Database connection
+
+
+console.log(`index:Database connection: ${db}`)
 
 //All imported routes are here
 app.use(getRoute)

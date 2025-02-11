@@ -2,21 +2,23 @@
 import sqlite3 from 'sqlite3';
 import { execute } from './sql.mjs';
 
-export const newDB = async (dbName) => {
+const newDB = async (dbName) => {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database(`${dbName}.db`, (err) => {
             if (err) {
+                console.error('Error opening database:', err);
                 reject(err);
             } else {
+                console.log('Connected to the database.', dbName);
                 resolve(db);
+
             }
         });
     });
-};
-
-export const initDB = async () => {
+}
+const initDB = async (newname) => {
     try {
-        const db = await newDB('main');
+        const db = await newDB(newname);
         console.log('Database created successfully:', db);
 
         // Ensure the users table exists
@@ -37,13 +39,7 @@ export const initDB = async () => {
         console.error('Error creating database or table:', err);
         throw err;
     }
-};
-/*
-let db;
-
-initDB().then((initializedDB) => {
-    db = initializedDB;
-    console.log('Database and table initialized successfully.');
-}).catch((err) => {
-    console.error('Error initializing database:', err);
-}); */
+}
+// Create and export a single 'db' instance
+const db = await initDB('coredb');
+export default db
