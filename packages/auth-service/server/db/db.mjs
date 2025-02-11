@@ -1,6 +1,7 @@
 // Create a new DB
 import sqlite3 from 'sqlite3';
 import { execute } from './sql.mjs';
+import chalk from 'chalk';
 
 const newDB = async (dbName) => {
     return new Promise((resolve, reject) => {
@@ -9,7 +10,7 @@ const newDB = async (dbName) => {
                 console.error('Error opening database:', err);
                 reject(err);
             } else {
-                console.log('Connected to the database.', dbName);
+                console.log(chalk.bgYellowBright('Connected to the database.', dbName))
                 resolve(db);
 
             }
@@ -28,7 +29,7 @@ const initDB = async (newname) => {
                 username TEXT NOT NULL UNIQUE,
                 email TEXT NOT NULL UNIQUE,
                 password TEXT NOT NULL,
-                jwt TEXT NOT NULL UNIQUE,
+                refreshToken TEXT NOT NULL UNIQUE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
                 

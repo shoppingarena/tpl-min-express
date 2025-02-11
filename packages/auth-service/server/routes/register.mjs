@@ -3,6 +3,7 @@ import express from 'express'
 import multer from 'multer'
 import { body, validationResult } from 'express-validator'
 import { SignJWT } from 'jose'
+import { secretKey, refreshKey, generateToken } from '../config/auth.mjs'
 import { execute, get } from '../db/sql.mjs'
 import db from '../db/db.mjs';
 import bcrypt from 'bcrypt'
@@ -18,7 +19,6 @@ const registerRoute = express.Router()
 const saltRounds = 10
 
 //Generate a secret key (must be stored securely in .env in production)
-const secretKey = crypto.randomBytes(32)
 console.log(chalk.green('Secret key: '), secretKey.toString('hex'))
 
 const upload = multer()
@@ -51,19 +51,10 @@ registerRoute.post('/register', upload.none(),
                     } else {
                         const hash = await bcrypt.hash(password, saltRounds)
                         //Create JWT token
-                        const jwt = await new SignJWT({ username, email })
-                            .setProtectedHeader({ alg: 'HS256' })
-                            .setIssuedAt()
-                            .setExpirationTime('2h')
-                            .sign(secretKey)
-                        console.log('Generated JWT:', jwt)
-                        /* After succesfull registeration, Return JWT token to client.
-                            User can use this token for authenticated requests.
-                            201 status code means "Created"
-                            redirect handle frontend script
-                            Important! to send JWT token after registration.
-                        */
-                        await execute(db, `INSERT INTO users(username, email, password, jwt) VALUES('${username}', '${email}', '${hash}', '${jwt}')`)
+                        const jwt = await generateToken({ username, email }, '15m', secretKey)
+                        const refreshToken = await generateToken({ username, email }, '7d', refreshKey)
+
+                        await execute(db, `INSERT INTO users(username, email, password, refreshToken) VALUES('${username}', '${email}', '${hash}', '${refreshToken}')`)
 
                         //SECURE WAY TO SEND JWT TOKEN TO CLIENT AFTER REGISTRATION WITH SECURE COOKIE
                         res.setHeader('Set-Cookie', cookie.serialize('token', jwt, {
