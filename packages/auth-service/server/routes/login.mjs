@@ -58,7 +58,7 @@ loginRoute.post('/login', upload.none(),
                 await execute(db, `UPDATE users SET refreshToken  = '${refreshToken}' WHERE username = '${username}'`)
                 // Securely send cookies to client with tokens 
                 res.setHeader('Set-Cookie', [
-                    cookie.serialize('token', accessToken, {
+                    cookie.serialize('accessToken', accessToken, {
                         httpOnly: true, // Prevents JavaScript access (XSS Protection)
                         secure: false, // Set to true in production (HTTPS only
                         sameSite: 'strict', // Prevents CSRF attacks

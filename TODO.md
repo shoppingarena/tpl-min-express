@@ -1,5 +1,6 @@
 # TODO
 
+[ ] JWT Verification Middleware server/utils/authMiddleware.js
 [ ] add Authorisation middleware to protect routes
 [ ] add refresh token
 

@@ -10,6 +10,7 @@ import path, { dirname } from 'node:path';
 import getRoute from './server/getRouter.mjs'
 import postRoute from './server/routes/postRouter.mjs'
 import tailwindcss from 'tailwindcss'
+import adminRoute from './server/routes/admin.mjs';
 
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
@@ -43,6 +44,7 @@ console.log(`index:Database connection: ${db}`)
 //All imported routes are here
 app.use(getRoute)
 app.use(postRoute)
+app.use(adminRoute)
 
 app.delete('/delete', async (req, res) => {
     const { id } = req.body;

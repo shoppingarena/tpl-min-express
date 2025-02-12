@@ -51,19 +51,27 @@ registerRoute.post('/register', upload.none(),
                     } else {
                         const hash = await bcrypt.hash(password, saltRounds)
                         //Create JWT token
-                        const jwt = await generateToken({ username, email }, '15m', secretKey)
+                        const accessToken = await generateToken({ username, email }, '15m', secretKey)
                         const refreshToken = await generateToken({ username, email }, '7d', refreshKey)
 
                         await execute(db, `INSERT INTO users(username, email, password, refreshToken) VALUES('${username}', '${email}', '${hash}', '${refreshToken}')`)
 
                         //SECURE WAY TO SEND JWT TOKEN TO CLIENT AFTER REGISTRATION WITH SECURE COOKIE
-                        res.setHeader('Set-Cookie', cookie.serialize('token', jwt, {
-                            httpOnly: true, // Prevents JavaScript access (XSS Protection)
-                            secure: false, // Set to true in production (HTTPS only
-                            sameSite: 'strict', // Prevents CSRF attacks
-                            maxAge: 60 * 60 * 2, // Token expiration time in seconds (2 hours)
-                            path: '/', // Cookie path available for all routes
-                        }))
+                        res.setHeader('Set-Cookie', [
+                            cookie.serialize('accessToken', accessToken, {
+                                httpOnly: true, // Prevents JavaScript access (XSS Protection)
+                                secure: false, // Set to true in production (HTTPS only
+                                sameSite: 'strict', // Prevents CSRF attacks
+                                maxAge: 60 * 60 * 2, // Token expiration time in seconds (2 hours) 900
+                                path: '/'// Cookie path available for all routes
+                            }),
+                            cookie.serialize('refreshToken', refreshToken, {
+                                httpOnly: true, // Prevents JavaScript access (XSS Protection)
+                                secure: false, // Set to true in production (HTTPS only
+                                sameSite: 'strict', // Prevents CSRF attacks
+                                maxAge: 60 * 60 * 24 * 7, // Token expiration time in seconds (7 days) 604800
+                                path: '/'// Cookie path available for all routes
+                            })])
                         // return res.status(201).json({ message: 'Registration successful', token: jwt, redirect: '/home' });
                         return res.status(201).json({ message: 'Registration successful', redirect: '/home' })
                         //res.redirect('/home')
