@@ -16,7 +16,7 @@ const refreshKey = process.env.JWT_REFRESH_KEY
 
 
 const generateToken = async (user, expiresIn, key) => {
-    console.log(chalk.bgCyan('Generating token'))
+    console.log(chalk.bgCyan('CONFIG/AUTH:Generating token'))
 
     return await new SignJWT({ user })
         .setProtectedHeader({ alg: 'HS256' })

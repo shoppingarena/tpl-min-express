@@ -1,8 +1,10 @@
 # TODO
 
-[ ] JWT Verification Middleware server/utils/authMiddleware.js
+[ ] for 404 status add sign in form to be inform about requested resource in future
+[X] 401, 403, 404, 405 status redirect|render in routes/routeXXX.mjs vies/status.pug
+[x] JWT Verification Middleware server/utils/authMiddleware.js
 [ ] add Authorisation middleware to protect routes
-[ ] add refresh token
+[X] add refresh token
 
 [ ] update fetch[login, register]
 

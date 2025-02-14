@@ -9,3 +9,7 @@ Route       Method      Needs Authentication? Why?
 /profile    GET         ✅ Yes Profile data should only be available to the logged-in user.
 /settings   GET/POST    ✅ Yes Users must be authenticated to change settings.
 /admin      GET         ✅ Yes (with role check) Only admins should access admin routes.
+
+[https://restfulapi.net/http-status-codes/]
+[https://developer.mozilla.org/en-US/docs/Web/HTTP/Status]
+[https://en.wikipedia.org/wiki/List_of_HTTP_status_codes]

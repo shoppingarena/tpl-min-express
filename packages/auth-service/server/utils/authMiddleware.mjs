@@ -5,26 +5,29 @@ import { secretKey } from "../config/auth.mjs"
 
 async function authVerifyMiddleware(req, res, next) {
     const cookies = cookie.parse(req.headers.cookie || "")
-    console.log('Cookies:', cookies)
+    console.log('AUTHMIDDLEWARE:Cookies:', cookies)
+    const authHeader = req.headers['Authorization']
+    console.log('AUTHMIDDLEWARE:Auth Header:', authHeader)
 
     // Fix: Use the correct cookie name (ensure this matches what you set in login/refresh)
     const token = cookies.accessToken; // Ensure the cookie name is correct
-    console.log("Access Token:", token);
-    if (!token) return res.status(401).json({ message: "Unauthorized - accessToken not found" })
+    console.log("AUTHMIDDLEWARE: Access Token:", token);
+    if (!token) return res.status(401).render('status', { title: 'Unauthorized - 401', message: "Unauthorized - accessToken not found", redirect: '/login' })
 
     try {
         // Fix: Ensure `secretKey` is a `Uint8Array`
         const keyBytes = secretKey instanceof Uint8Array ? secretKey : new TextEncoder().encode(secretKey);
         console.log("KeyBytes:", keyBytes);
 
-        console.log('Attempting to verify token...')
+        console.log('AUTHMIDDLEWARE: Attempting to verify token...')
         const { payload } = await jwtVerify(token, keyBytes)
-        console.log('Verification Successful! Payload:', payload)
+        console.log('AUTHMIDDLEWARE:Verification Successful! Payload:', payload)
         req.user = payload // Store user info in rew.user
         next()
     } catch (err) {
         console.log()
-        return res.status(403).json({ message: 'Invalid or expired accessToken' })
+        return res.status(403).render('status', { title: 'Forbidden - 403', message: 'Invalid or expired accessToken', redirect: '/login' })
+
     }
 }
 export default authVerifyMiddleware

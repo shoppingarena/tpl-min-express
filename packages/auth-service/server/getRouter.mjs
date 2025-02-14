@@ -33,6 +33,9 @@ getRoute.get('/register', (req, res) => {
 getRoute.get('/login', (req, res) => {
     res.render('login', { title: 'Login' })
 })
+getRoute.get('/logout', (req, res) => {
+    res.render('logout', { title: 'Logout' })
+})
 
 getRoute.get('/page', (req, res) => {
     res.render('page')

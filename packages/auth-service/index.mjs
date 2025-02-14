@@ -11,6 +11,7 @@ import getRoute from './server/getRouter.mjs'
 import postRoute from './server/routes/postRouter.mjs'
 import tailwindcss from 'tailwindcss'
 import adminRoute from './server/routes/admin.mjs';
+import routeXXX from './server/routes/routeXXX.mjs';
 
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
@@ -42,6 +43,7 @@ console.log(`Path.join is: ${path.join(__dirname, 'server', 'views')}`)
 console.log(`index:Database connection: ${db}`)
 
 //All imported routes are here
+app.use(routeXXX)
 app.use(getRoute)
 app.use(postRoute)
 app.use(adminRoute)
