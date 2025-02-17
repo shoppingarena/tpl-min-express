@@ -1,4 +1,6 @@
 import express from 'express'
+import coookieParser from 'cookie-parser'
+
 import helmet, { crossOriginResourcePolicy } from 'helmet'
 // import bcrypt from 'bcrypt' => postRouter.mjs
 import db from './server/db/db.mjs'
@@ -12,6 +14,7 @@ import postRoute from './server/routes/postRouter.mjs'
 import tailwindcss from 'tailwindcss'
 import adminRoute from './server/routes/admin.mjs';
 import routeXXX from './server/routes/routeXXX.mjs';
+import cookieParser from 'cookie-parser'
 
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
@@ -20,6 +23,7 @@ const __dirname = dirname(__filename);
 console.log('Directory name:', __dirname);
 
 const app = express()
+app.use(cookieParser())
 // SECURE EXPRESS APP BY SETTING VARIOUS HTTP HEADERS
 app.use(helmet())
 // request sends form-encoded data from html form, Parses URL-encoded form data

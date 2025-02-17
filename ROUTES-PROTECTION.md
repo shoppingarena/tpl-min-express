@@ -13,3 +13,43 @@ Route       Method      Needs Authentication? Why?
 [https://restfulapi.net/http-status-codes/]
 [https://developer.mozilla.org/en-US/docs/Web/HTTP/Status]
 [https://en.wikipedia.org/wiki/List_of_HTTP_status_codes]
+
+## Role-Based access control (RBAC)
+
+### Add admin route protection into authentication middleware
+
+```js
+async function authVerifyMiddleware(req, res, next) {
+    const cookies = cookie.parse(req.headers.cookie || "");
+    console.log("Cookies:", cookies);
+    const token = cookies.accessToken;
+
+    if (!token) return res.status(401).json({ message: "Unauthorized - accessToken not found" });
+
+    try {
+        const { payload } = await jwtVerify(token, secretKey);
+        req.user = payload; // Store user info in req.user
+        next();
+    } catch (err) {
+        return res.status(403).json({ message: "Invalid or expired accessToken" });
+    }
+}
+// ADMIN PROTECTION MIDDLEWARE
+export async function adminVerifyMiddleware(req, res, next) {
+    if (!req.user || req.user.role !== "admin") {
+        return res.status(403).json({ message: "Forbidden - Admins only" });
+    }
+    next();
+}
+
+export default authVerifyMiddleware
+
+```
+
+#### Apply adminVerifyMiddlevare to admin routes
+
+```js
+import { adminVerifyMiddleware } from "../middleware/authMiddleware.mjs";
+router.use("/admin", authVerifyMiddleware, adminVerifyMiddleware, adminRoute);
+
+```
