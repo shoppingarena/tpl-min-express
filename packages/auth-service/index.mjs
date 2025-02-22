@@ -9,7 +9,7 @@ import path, { dirname } from 'node:path';
 // import crypto from 'node:crypto' => postRouter.mjs
 // import { execute, get } from './server/db/sql.mjs'; => postRouter.mjs
 // import chalk from 'chalk' => postRouter.mjs
-import getRoute from './server/getRouter.mjs'
+import getRouter from './server/routes/getRouter.mjs'
 import postRoute from './server/routes/postRouter.mjs'
 import tailwindcss from 'tailwindcss'
 import adminRoute from './server/routes/admin.mjs';
@@ -48,7 +48,7 @@ console.log(`index:Database connection: ${db}`)
 
 //All imported routes are here
 app.use(routeXXX)
-app.use(getRoute)
+app.use(getRouter)
 app.use(postRoute)
 app.use(adminRoute)
 

@@ -7,7 +7,7 @@ async function authVerifyMiddleware(req, res, next) {
     const cookies = cookie.parse(req.headers.cookie || "")
     console.log('AUTHMIDDLEWARE:Cookies:', cookies)
     const authHeader = req.headers
-    console.log('AUTHMIDDLEWARE:Auth Header:', authHeader)
+    //console.log('AUTHMIDDLEWARE:Auth Header:', authHeader)
 
     // Fix: Use the correct cookie name (ensure this matches what you set in login/refresh)
     const token = cookies.accessToken; // Ensure the cookie name is correct

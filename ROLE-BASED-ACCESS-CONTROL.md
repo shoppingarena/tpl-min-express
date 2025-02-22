@@ -1,5 +1,62 @@
 # Role-Based Access Control (RBAC)
 
+1. Insert Default Roles
+
+    ```sql
+    INSERT INTO roles (name) VALUES ('admin'), ('editor'), ('user');
+    ```
+
+    sqlite> .mode tabs
+    sqlite> select * from roles;
+    1       admin
+    2       user
+    3       editor
+
+2. Assign Roles to Users
+
+    - When user registrer, assign them one or more roles.
+    **Assign a Role to a User**
+    This assign role **admin** to  user with **id = 1**
+
+    ```sql
+    INSERT INTO user_roles (user_id, role_id) 
+    VALUES (1, (SELECT id FROM roles WHERE name = 'admin'));
+    ```
+
+    **Assign Multiple Roles to a User**
+    User 2 now has both **editor** and **user** roles
+
+    ```sql
+    INSERT INTO user_roles (user_id, role_id) 
+    VALUES 
+        (2, (SELECT id FROM roles WHERE name = 'editor')),
+        (2, (SELECT id FROM roles WHERE name = 'user'));
+    ```
+
+3. Query User Roles
+
+    - Get All Roles for a Specific User
+    - Joins user_roles with roles to get all roles assigned to a user.
+
+    ```sql
+    SELECT roles.name FROM roles
+    JOIN user_roles ON roles.id = user_roles.role_id
+    WHERE user_roles.user_id = 2
+    ```
+
+4. Check if User has a Specific Role
+
+**Before allowing access to protected resources, check if the user has the required role.**
+
+- Check if User Has **admin Role
+
+```sql
+SELECT COUNT(*) FROM user_roles
+JOIN roles ON user_roles.role_id = roles.id
+WHERE user_roles.user_id = 1 AND roles.name = 'admin';
+
+```
+
 ## How RBAC works?
 
 1. Each User has a Role:

@@ -40,5 +40,8 @@ getRoute.get('/logout', (req, res) => {
 getRoute.get('/page', (req, res) => {
     res.render('page')
 })
+getRoute.get('/dashboard', (req, res) => {
+    res.render('dashboard')
+})
 
 export default getRoute;

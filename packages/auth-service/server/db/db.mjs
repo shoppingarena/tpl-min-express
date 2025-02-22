@@ -2,6 +2,7 @@
 import sqlite3 from 'sqlite3';
 import { execute } from './sql.mjs';
 import chalk from 'chalk';
+import adminRoute from '../routes/admin.mjs';
 
 const newDB = async (dbName) => {
     return new Promise((resolve, reject) => {
@@ -31,10 +32,24 @@ const initDB = async (newname) => {
                 password TEXT NOT NULL,
                 refreshToken TEXT NOT NULL UNIQUE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-                
+            );`)
+        await execute(db, `
+            CREATE TABLE IF NOT EXISTS roles (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT UNIQUE NOT NULL);`)
+        await execute(db, `
+            CREATE TABLE IF NOT EXISTS user_roles (
+                user_id INTEGER,
+                role_id INTEGER,
+                PRIMARY KEY (user_id, role_id),
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (role_id) REFERENCES roles(id)
+                );`)
+        await execute(db, `
+            INSERT INTO roles (name) VALUES ('admin'), ('user'), ('editor');
         `);
-        console.log('Table created successfully');
+
+        console.log('Tables created successfully');
         return db;
     } catch (err) {
         console.error('Error creating database or table:', err);
