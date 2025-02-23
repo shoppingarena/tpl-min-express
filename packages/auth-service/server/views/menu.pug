@@ -1,16 +1,22 @@
 nav
-    ul.flex.flex-row.justify-around.cursor-pointer
+    ul(class='flex flex-row justify-evenly cursor-pointer sm:text-base md:text-lg lg:text-2xl')
         li
-            a(href='/home') Home
+            a(href='/home') #[span(class="material-symbols-outlined") home]Home
         li
-            a(href='/about') About
+            a(href='/about') #[span(class="material-symbols-outlined") info]About
+        li 
+            a(href='/portfolio') #[span(class="material-symbols-outlined") business_center]Portfolio
+        li 
+            a(href='/blog') #[span(class="material-symbols-outlined") article]Blog
         li
-            a(href='/contact') Contact
+            a(href='/contact') #[span(class="material-symbols-outlined") contact_page]Contact
         li
-            a(href='/login') Login
+            a(href='/login') #[span(class="material-symbols-outlined") login]Login
         li
-            a(href='/register') Signup
+            a(href='/register') #[span(class="material-symbols-outlined") app_registration]Signup
         li
-            a(href='/logout') Logout
+            a(href='/logout' class='flex flex-wrap items-center justify-center') #[span(class="material-symbols-outlined") logout]Logout
         li
-            a(href='/admin') Admin
+            a(href='/dashboard' class='flex flex-wrap items-center gap-1') #[span(class="material-symbols-outlined") dashboard]Dashboard
+        li
+            a(href='/admin') #[span(class="material-symbols-outlined") admin_panel_settings]Admin

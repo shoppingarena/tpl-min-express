@@ -45,9 +45,10 @@ const initDB = async (newname) => {
                 FOREIGN KEY (user_id) REFERENCES users(id),
                 FOREIGN KEY (role_id) REFERENCES roles(id)
                 );`)
-        await execute(db, `
-            INSERT INTO roles (name) VALUES ('admin'), ('user'), ('editor');
-        `);
+        await execute(db, `INSERT OR IGNORE INTO roles (name) VALUES ('admin')`);
+        await execute(db, `INSERT OR IGNORE INTO roles (name) VALUES ('user')`);
+        await execute(db, `INSERT OR IGNORE INTO roles (name) VALUES ('editor')`);
+
 
         console.log('Tables created successfully');
         return db;
