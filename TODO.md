@@ -1,5 +1,30 @@
 # TODO
 
+[ ] SelfHost Icons [https://developers.google.com/fonts/docs/material_symbols#self-hosting_the_font]
+[ ] Create a new route for user profile
+[ ] Create a new route for user settings
+[ ] Create a new route for user logout
+[ ] Create a new route for user login
+[ ] Create a new route for user register
+[ ] Create a new route for user dashboard
+[ ] Create a new route for user home
+[ ] Create a new route for user about
+[ ] Create a new route for user contact
+[ ] Create a new route for user help
+[ ] Create a new route for user privacy
+[ ] Create a new route for user terms
+[ ] Create a new route for user refresh token
+[ ] Create a new route for user verify email
+[ ] Create a new route for user reset password
+[ ] Create a new route for user change password
+[ ] Create a new route for user change email
+[ ] Create a new route for user change username
+[ ] Create a new route for user change profile picture
+[ ] Create a new route for user change profile background
+[ ] Create a new route for user change profile bio
+[ ] Create a new route for user change profile location
+[ ] Create a new route for user change profile website
+[ ] Create a new route for user change profile social media
 [ ] Create Admin Dashboard with only admin role permision has access to
 [ ] Implement multi-factor authentication (MFA) for better security
 [ ] Create / route index.pug  index.mjs
