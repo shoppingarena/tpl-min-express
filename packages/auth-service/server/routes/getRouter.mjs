@@ -21,6 +21,10 @@ getRoute.get('/', (req, res) => {
 getRoute.get('/home', (req, res) => [
     res.render('index', { title: 'Home' })
 ])
+// About page
+getRoute.get('/about', (req, res) => {
+    res.render('about', { title: 'About' })
+})
 
 // Define the register page route
 getRoute.get('/register', (req, res) => {
