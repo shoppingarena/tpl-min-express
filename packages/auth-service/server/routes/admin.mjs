@@ -10,7 +10,7 @@ adminRoute.get('/admin', authVerifyMiddleware, (req, res) => {
     const username = req.user.username
     console.log('Username is: ', username)
 
-    res.render('admin', { title: 'Admin Page', user: req.user.user })
+    res.render('admin', { title: 'Admin Page', username: username })
 })
 
 export default adminRoute

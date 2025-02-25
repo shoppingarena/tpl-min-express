@@ -27,10 +27,10 @@ const initDB = async (newname) => {
         await execute(db, `
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY,
-                username TEXT NOT NULL UNIQUE,
-                email TEXT NOT NULL UNIQUE,
-                password TEXT NOT NULL,
-                refreshToken TEXT NOT NULL UNIQUE,
+                username TEXT UNIQUE NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                password TEXT UNIQUE NOT NULL,
+                refreshToken TEXT UNIQUE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );`)
         await execute(db, `
@@ -58,5 +58,5 @@ const initDB = async (newname) => {
     }
 }
 // Create and export a single 'db' instance
-const db = await initDB('coredb');
+const db = await initDB('a2.db');
 export default db

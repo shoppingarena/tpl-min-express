@@ -47,5 +47,8 @@ getRoute.get('/page', (req, res) => {
 getRoute.get('/dashboard', (req, res) => {
     res.render('dashboard')
 })
+getRoute.get('/icons', (req, res) => {
+    res.render('icons', { title: 'Icons' })
+})
 
 export default getRoute;

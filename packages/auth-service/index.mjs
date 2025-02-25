@@ -15,6 +15,7 @@ import tailwindcss from 'tailwindcss'
 import adminRoute from './server/routes/admin.mjs';
 import routeXXX from './server/routes/routeXXX.mjs';
 import cookieParser from 'cookie-parser'
+import seedAdmin from './server/seedAdmin.mjs';
 
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
@@ -60,6 +61,9 @@ app.delete('/delete', async (req, res) => {
     } catch (err) {
         console.error('Error deleting user:', err);
     }
+})
+seedAdmin().then(() => {
+    console.log("Admin seeding complete. Starting server...");
 })
 
 const PORT = 3000
