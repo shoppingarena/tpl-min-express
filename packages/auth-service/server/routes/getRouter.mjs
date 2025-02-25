@@ -19,7 +19,7 @@ getRoute.get('/', (req, res) => {
 
 // Define the home page route
 getRoute.get('/home', (req, res) => [
-    res.render('index', { title: 'Home' })
+    res.render('home', { title: 'Home' })
 ])
 // About page
 getRoute.get('/about', (req, res) => {
