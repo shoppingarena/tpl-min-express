@@ -1,6 +1,6 @@
 {
     "watch": [
-        "server",
+        "server/views",
         "public",
         "index.mjs"
     ],

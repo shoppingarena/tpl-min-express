@@ -1,6 +1,6 @@
 mixin navLink(href, icon, text)
     li
-        a(href=href class='noto-sans-roman-400 flex flex-wrap items-center justify-center') #[span(class="material-symbols-outlined")= icon]#{text}
+        a(href=href class='flex flex-wrap items-center justify-center gap-1') #[span(class="material-symbols-outlined")= icon]#{text}
 
 nav
     ul(class='flex flex-row justify-evenly cursor-pointer sm:text-base md:text-lg lg:text-2xl')

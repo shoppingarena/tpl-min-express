@@ -2,12 +2,15 @@ include template-form
 
 doctype html
 html
-  include ./head.pug
-  body
-    include ./header.pug
-    
-    div.flex.flex-col.flex-wrap.max-w-sm.justify-center.items-center.h-screen.mx-auto    
-      +formTemplate('/login', 'POST','login', [
-        { name: 'username', id:'username', type: 'text', label: 'username', placeholder: 'Enter your username', required: true, autocomplete:'username' },
-        { name: 'password', id:'password', type: 'password', label: 'password', placeholder: 'Enter your password', required: true, autocomplete: 'current-password' }])
-    script(type='module', src='/static/utils/loginInfo.mjs')
+  
+    include ./head.pug
+    body
+  
+        include ./header.pug
+        
+        div.flex.flex-col.flex-wrap.min-w-xl.max-w-xl.justify-center.items-center.h-screen.mx-auto  
+          +formTemplate('/login', 'POST','login', [
+              { name: 'username', id:'username', type: 'text', label: 'username', placeholder: 'Enter your username', required: true, autocomplete:'username' },
+              { name: 'password', id:'password', type: 'password', label: 'password', placeholder: 'Enter your password', required: true, autocomplete: 'current-password' }
+              ])
+        script(type='module', src='/static/utils/loginInfo.mjs')
