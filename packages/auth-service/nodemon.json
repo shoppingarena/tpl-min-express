@@ -1,0 +1,14 @@
+{
+    "watch": [
+        "server/views",
+        "public",
+        "index.mjs"
+    ],
+    "ext": "pug, mjs, js",
+    "ignore": [
+        "node_modules",
+        "static"
+    ],
+    "exec": "node index.mjs",
+    "delay": 10
+}

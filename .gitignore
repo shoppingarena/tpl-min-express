@@ -1,5 +1,7 @@
+# .env
+.end
 # database
-.main.db
+main.db
 
 # Logs
 logs
@@ -137,3 +139,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
