@@ -2,15 +2,60 @@ doctype html
 html
   
     include ./head.pug 
-    body  
+    body(class="bg-gray-100 text-gray-900") 
     
         include ./header.pug   
             
-        div.main.flex.flex-col.flex-wrap.max-w-sm.justify-center.items-center.h-screen.bg-sky-200.mx-auto
-            h1(class='text-2xl text-sky-500 font-bold')= message
-            ul.mt-5.text-xl.text-sky-500 
-                li + Express.js
-                li + Pug Template Engine
-                li + Tailwindcss
+
+        div(class='container mx-auto pt-6 p-1 sm:p-2 md:p-4 lg:p-8')
+            header.text-center.mb-8
+                h1(class='text-3xl md:text-5xl font-bold text-gray-800') Jiri Benes
+                p.text-lg.mt-2 Full-Stack JavaScript Developer | E-Commerce & PWA Professional
+            
+                section.mb-8
+                    h2.text-2xl.font-semibold.text-gray-800 Building Scalable, Secure & High-Performance Web Applications
+                    p.mt-2 Leading expert in secure, high-performance web solutions, e-commerce platforms, and PWAs.
+                
+                section.mb-8
+                    h2.text-2xl.font-semibold.text-gray-800 What I Offer
+                    div(class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-4')
+                        .p-4.bg-white.shadow-lg.rounded-lg
+                            h3.text-xl.font-semibold Backend Development
+                            - var listClasses = 'flex flex-col flex-wrap content-center text-left list-disc list-inside mt-2'
+                            ul(class=listClasses)
+                                li Scalable backend solutions with Node.js & Express.js
+                                li Secure authentication & authorization (OAuth, Passkey, RBAC)
+                                li Database management (SQLite3, MySQL, MongoDB)
+                                li RESTful & GraphQL API development
+                        .p-4.bg-white.shadow-lg.rounded-lg
+                            h3.text-xl.font-semibold E-Commerce Solutions
+                            ul(class=listClasses)
+                                li Custom WooCommerce & WordPress development
+                                li Secure payment gateway integration (Stripe, PayPal, etc.)
+                                li SEO & performance optimization for online stores
+                                li Scalable & secure shopping experiences
+                        .p-4.bg-white.shadow-lg.rounded-lg
+                            h3.text-xl.font-semibold Progressive Web Applications (PWA)
+                            ul(class=listClasses)
+                                li Fast-loading & mobile-first web apps
+                                li Offline support & push notifications
+                                li Enhanced user engagement & conversions
+                        .p-4.bg-white.shadow-lg.rounded-lg
+                            h3.text-xl.font-semibold UI/UX & Minimalist Design
+                            ul(class=listClasses)
+                                li Simple, intuitive, and client-friendly interfaces
+                                li Tailwind CSS for responsive & clean design
+                                li Conversion-focused website architecture
+                    
+                section.mb-8.text-center
+                    h2.text-2xl.font-semibold.text-gray-800 Why Work With Me?
+                    div(class='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4')
+                        .p-4.bg-white.shadow-lg.rounded-lg ✅ Scalable & Secure Solutions
+                        .p-4.bg-white.shadow-lg.rounded-lg ✅ Industry-Standard Security
+                        .p-4.bg-white.shadow-lg.rounded-lg ✅ SEO & Performance Optimized
+                        .p-4.bg-white.shadow-lg.rounded-lg ✅ Client-Centric Approach
+                
+            
+
             
     include ./footer.pug

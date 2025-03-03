@@ -2,7 +2,7 @@ mixin navLink(href, icon, text)
     li(class='hover:border-b-2')
         a(href=href class='flex flex-wrap items-center justify-center gap-1') #[span(class="material-symbols-outlined")= icon]#{text}
 
-nav(clas='')
+nav(class='pt-2 h-10')
     ul(class='flex flex-row justify-evenly cursor-pointer sm:text-base md:text-lg lg:text-2xl')
         +navLink('/home','home','Home')
         +navLink('/about', 'info', 'About')

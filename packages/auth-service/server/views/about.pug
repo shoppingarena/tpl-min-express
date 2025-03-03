@@ -6,15 +6,22 @@ html
     
         include ./header.pug   
         
-        .bg-white.shadow-md.rounded-lg.p-6
-                h1.text-3xl.font-bold.mb-4 About Me
-                p.mb-4.text-lg I am a full stack developer with experience in building web applications using technologies such as React, Node.js, Express, and MongoDB. I focus on creating functional, simple, and minimalist responsive applications.
-                p.mb-4.text-lg I am passionate about learning new technologies and building innovative solutions. I am always seeking new challenges and opportunities to grow as a developer.
-                p.mb-4.text-lg I am a team player and enjoy collaborating with others to build great products.
-
-                p.mb-4.text-lg I am currently looking for new opportunities to grow and learn as a developer. If you have any questions or would like to work together, please feel free to contact me.
-                p.mb-4.text-lg Thank you for visiting my website.
-                p.mb-4.text-lg Best regards,
-                p.mb-4.text-lg [Your Name]
+        .container.mx-auto.p-6
+            section.text-center.mb-8
+                h1.text-2xl.font-semibold.text-gray-800 About Me
+                p.mt-2 I’m Jiri Beneš, a Full-Stack JavaScript Developer
+                p specializing in backend security, authentication, and e-commerce solutions.
+                p Passionate about building seamless web applications that enhance user experience and business growth.
+        
+            section.mb-8.text-center
+                h2.text-2xl.font-semibold.text-gray-800 Let’s Connect!
+                p.mt-2 Looking for a reliable developer? Let’s work together to create a powerful digital experience.
+                .mt-4
+                a(class='text-blue-600 hover:underline' href='mailto:your.email@example.com') 📧 Email Me
+                br
+                a(class='text-blue-600 hover:underline' href='https://benesjiri.com') 🌐 Visit My Website
+                br
+                a(class='text-blue-600 hover:underline' href='https://linkedin.com/in/your-profile') 🔗 LinkedIn Profile
+                br
         include ./footer.pug
     

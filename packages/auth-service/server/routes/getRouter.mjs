@@ -11,7 +11,7 @@ router.use(check-user-authentication)
 */
 //Define Landing page as default page
 getRoute.get('/', (req, res) => {
-    res.render('index', { title: 'Landing page', message: 'Hello From Landing Page!' })
+    res.render('index', { title: 'Jiri Beneš | Full-Stack JavaScript Developer' })
     //console.log(`Request object recieved by server is: ${res.req}`)
     //console.log(`Response object send to client is: ${res}`)
 })
@@ -19,13 +19,15 @@ getRoute.get('/', (req, res) => {
 
 // Define the home page route
 getRoute.get('/home', (req, res) => [
-    res.render('home', { title: 'Home' })
+    res.render('index', { title: 'Home' })
 ])
 // About page
 getRoute.get('/about', (req, res) => {
     res.render('about', { title: 'About' })
 })
-
+getRoute.get('/portfolio', (req, res) => {
+    res.render('portfolio', { title: 'Portfolio' })
+})
 // Define the register page route
 getRoute.get('/register', (req, res) => {
     const cesta = req.baseUrl
