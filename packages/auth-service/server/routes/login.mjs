@@ -13,6 +13,7 @@ import cookie from 'cookie'
 
 const loginRoute = express.Router()
 const upload = multer()
+const log = console.log
 
 loginRoute.post('/login', upload.none(),
     [
@@ -20,7 +21,7 @@ loginRoute.post('/login', upload.none(),
         body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
     ],
     async (req, res) => {
-        console.log('DEBUG: Validate logins..');
+        log(chalk.rgb(112, 8, 231)('DEBUG: Validate logins..'))
 
 
         //Validate Login inputs
@@ -41,7 +42,7 @@ loginRoute.post('/login', upload.none(),
                     return res.status(302).json({ message: 'Invalid username or ' })
                 }
 
-                console.log('DEBUG: Checking password...');
+                log(chalk.rgb(112, 8, 231)('DEBUG: Checking password...'))
 
                 //Check if password is correct
                 const hashedPassword = user.password
@@ -50,7 +51,7 @@ loginRoute.post('/login', upload.none(),
                     console.log(chalk.red('LOGIN: Password is incorrect.', password))
                     return res.status(400).json({ message: 'Invalid           or password is incorrect.' })
                 }
-                console.log(chalk.greenBright('Password is correct...'))
+                log(chalk.rgb(112, 8, 231)('Password is correct...'))
                 // Generate new access and refresh tokens
                 const accessToken = await generateToken({ username, email: user.email }, '15m', secretKey)
                 const refreshToken = await generateToken({ username, email: user.email }, '7d', refreshKey)
