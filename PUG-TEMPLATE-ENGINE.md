@@ -1,4 +1,8 @@
-#
+# PUG Template engine
+
+I chose this template because I already practiced react.js
+
+- [Here is Babel plugin to transpile pug templates to jsx](<https://github.com/pugjs/babel-plugin-transform-react-pug>)
 
 **Difference between res.send and res.render in Express.js**
 In Express.js, both `res.send()` and `res.render()` are methods used to send a response to the client, but they serve different purposes and are used in different contexts. Here’s a breakdown of each:

@@ -1,7 +1,25 @@
-# This is not minimnal template for Express.js Server with type:module
+# This is not minimal template for Express.js Server with type:module
 
-**Purpose of this repository is to practise simple Authentication.**
->> [https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API]
+**Purpose of this repository is to practise theoretical knowledge and build portfolio usecase website.**
+
+- I focus here more on backend development
+- I have many years of practise building frontend website from scratch with html, css, js.
+- I worked as manager for jewelry eshop, ecommerce prestashop open source,
+   micro photography of jewelry,
+   photo editing, frontend editing,
+- I have a strong knowledge of Domain name system,
+- I have my own name servers
+- I am official domain fi registrator
+- I am changing my profesion from automotive industry to IT industry because it is my long term plan
+- I would like to work from home, remotely
+
+## My interest is authentication, authorization ( OTP, JWT, refresh tokens, validation, Passkey)
+
+## My second interest is to practice databases, sql language, practise ORM libraries ( Prime, Knex, ... )
+
+## My third interest is to practise payment system implementation. I already build eshop with Stripe payment
+
+## The last interest is to practise building PWA commercial applications
 
 ## This is monorepo for practise with some subprojects
 
@@ -18,7 +36,7 @@ Subprojects:
 - I use pnpm package manager
 - .gitignore file is included
 - I use Pug template engine >> [PUG-TEMPLATE-ENGINE.md](PUG-TEMPLATE-ENGINE.md)
-- I use Consolidate to use React as template engine
+- I do not use yet Consolidate to use React as template engine
 
 ## <https://datatracker.ietf.org/doc/html/rfc7231> - HTTP Semantics and Content
 
