@@ -13,6 +13,7 @@ import getRouter from './server/routes/getRouter.mjs'
 import postRoute from './server/routes/postRouter.mjs'
 import tailwindcss from 'tailwindcss'
 import adminRoute from './server/routes/admin.mjs';
+import emailRouter from './server/routes/emailRouter.mjs';
 import routeXXX from './server/routes/routeXXX.mjs';
 import cookieParser from 'cookie-parser'
 import seedAdmin from './server/seedAdmin.mjs';
@@ -52,6 +53,7 @@ app.use(routeXXX)
 app.use(getRouter)
 app.use(postRoute)
 app.use(adminRoute)
+app.use(emailRouter)
 
 app.delete('/delete', async (req, res) => {
     const { id } = req.body;
