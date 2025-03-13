@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             })
 
             const data = await response.json();
-            console.log(data); // Debug: Log the response data
+            console.log('Form data:', data); // Debug: Log the response data
             if (response.ok) {
                 console.log('Attempting to redirect to:', data.redirect)
                 window.location.href = data.redirect; // Redirect on successto the specified URL

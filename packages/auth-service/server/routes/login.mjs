@@ -10,6 +10,8 @@ import { secretKey, refreshKey, generateToken } from '../config/auth.mjs'
 import crypto from 'node:crypto'
 import chalk from 'chalk'
 import cookie from 'cookie'
+import authVerifyMiddleware from "../utils/authMiddleware.mjs";
+import { Console } from 'node:console'
 
 const loginRoute = express.Router()
 const upload = multer()
@@ -35,10 +37,12 @@ loginRoute.post('/login', upload.none(),
             try {
                 //Fetch user from database
                 const { username, password } = req.body
-                const user = await get(db, `SELECT * FROM users WHERE username = '${username}'`)
-                console.log(chalk.yellowBright('User retrieved from database:', user)) // Debugging
+                const user = await get(db, `SELECT * FROM users WHERE username = ?`, [username])
+                // Debugging data from DB
+                console.log('Raw user data from DB:', user.username)
+                console.log(chalk.yellowBright('User retrieved from database:', user.username)) // Debugging
                 if (!user) {
-                    console.log(chalk.red('LOGIN: Username does not exist:', username))
+                    console.log(chalk.red('LOGIN: Username does not exist:', user.username))
                     return res.status(302).json({ message: 'Invalid username or ' })
                 }
 
@@ -46,6 +50,7 @@ loginRoute.post('/login', upload.none(),
 
                 //Check if password is correct
                 const hashedPassword = user.password
+                console.log('User hashed password from DB:', user.password)
                 const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
                 if (!isPasswordCorrect) {
                     console.log(chalk.red('LOGIN: Password is incorrect.', password))

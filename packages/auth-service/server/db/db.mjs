@@ -58,5 +58,5 @@ const initDB = async (newname) => {
     }
 }
 // Create and export a single 'db' instance
-const db = await initDB('a2.db');
+const db = await initDB('a3');
 export default db
