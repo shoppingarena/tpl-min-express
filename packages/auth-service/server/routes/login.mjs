@@ -39,7 +39,8 @@ loginRoute.post('/login', upload.none(),
                 const { username, password } = req.body
                 const user = await get(db, `SELECT * FROM users WHERE username = ?`, [username])
                 // Debugging data from DB
-                console.log('Raw user data from DB:', user.username)
+                log(chalk.blue('Raw user data from DB username:', user.username))
+                log(chalk.blue('Raw user data from DB id:', user.id))
                 console.log(chalk.yellowBright('User retrieved from database:', user.username)) // Debugging
                 if (!user) {
                     console.log(chalk.red('LOGIN: Username does not exist:', user.username))
