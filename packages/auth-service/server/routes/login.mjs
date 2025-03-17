@@ -57,9 +57,15 @@ loginRoute.post('/login', upload.none(),
                     return res.status(400).json({ message: 'Invalid           or password is incorrect.' })
                 }
                 log(chalk.rgb(112, 8, 231)('Password is correct...'))
+                const userRole = await get(db, `
+                    SELECT roles.name AS role
+                    FROM user_roles
+                    JOIN roles ON user_roles.role_id = roles.id
+                    WHERE user_roles.user_id = ?`, [user.id])
+                console.log('userRole:', userRole)
                 // Generate new access and refresh tokens
-                const accessToken = await generateToken({ username, email: user.email }, '15m', secretKey)
-                const refreshToken = await generateToken({ username, email: user.email }, '7d', refreshKey)
+                const accessToken = await generateToken({ username, email: user.email, role: userRole.role }, '15m', secretKey)
+                const refreshToken = await generateToken({ username, email: user.email, role: userRole.role }, '7d', refreshKey)
                 // Update DB with refreshToken
                 await execute(db, `UPDATE users SET refreshToken  = '${refreshToken}' WHERE username = '${username}'`)
                 // Securely send cookies to client with tokens 

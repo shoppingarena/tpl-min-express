@@ -123,4 +123,4 @@ Usage Consideration:
 Steps:
 
 1. [X]Install otplib
-2.
+2. [ ] Create Table otp_tbl

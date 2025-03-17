@@ -11,6 +11,8 @@ nav(class='pt-2 h-10 mb-8')
         if username
             +navLink('/logout', 'logout', 'Logout')
             +navLink('/profile', 'account_circle', username)
+            if role === 'admin'
+                +navLink('/dashboard', 'dashboard', 'Dashboard')
         else
             +navLink('/login', 'login', 'Login')
             +navLink('/register', 'app_registration', 'Signup')
