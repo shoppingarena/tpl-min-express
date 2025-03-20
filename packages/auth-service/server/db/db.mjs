@@ -6,7 +6,14 @@ import adminRoute from '../routes/admin.mjs';
 
 const newDB = async (dbName) => {
     return new Promise((resolve, reject) => {
-        const db = new sqlite3.Database(`${dbName}.db`, (err) => {
+        // Navigate from 'server/db/' to 'server/database/'
+        const dbDir = path.join(__dirname, '../database');
+        const dbPath = path.join(dbDir, `${dbName}.db`);
+        // Ensure the database directory exists
+        if (!fs.existsSync(dbDir)) {
+            fs.mkdirSync(dbDir, { recursive: true });
+        }
+        const db = new sqlite3.Database(dbPath, (err) => {
             if (err) {
                 console.error('Error opening database:', err);
                 reject(err);

@@ -1,4 +1,6 @@
 import express from 'express'
+import authVerifyMiddleware from '../utils/authMiddleware.mjs'
+import publicMiddleware from '../utils/publicMiddleware.mjs'
 
 const getRoute = express.Router()
 
@@ -18,15 +20,25 @@ getRoute.get('/', (req, res) => {
 
 
 // Define the home page route
-getRoute.get('/home', (req, res) => [
-    res.render('index', { title: 'Home' })
-])
-// About page
-getRoute.get('/about', (req, res) => {
-    res.render('about', { title: 'About' })
+getRoute.get('/home', authVerifyMiddleware, (req, res) => {
+    const username = req.user.username
+    console.log('Username is: ', username)
+    const role = req.user.role
+    console.log('Role is: ', role)
+    res.render('home', { title: 'Home', username: username })
 })
-getRoute.get('/portfolio', (req, res) => {
-    res.render('portfolio', { title: 'Portfolio' })
+// About page
+getRoute.get('/about', publicMiddleware, (req, res) => {
+    const username = req.user ? req.user.username : null; // Use the logged-in username if available
+    res.render('about', { title: 'About', username })
+})
+getRoute.get('/portfolio', publicMiddleware, (req, res) => {
+    const username = req.user ? req.user.username : null; // Use the logged-in username if available
+    res.render('portfolio', { title: 'Portfolio', username })
+})
+getRoute.get('/contact', publicMiddleware, (req, res) => {
+    const username = req.user ? req.user.username : null; // Use the logged-in username if available
+    res.render('contact', { title: 'Contact', username })
 })
 // Define the register page route
 getRoute.get('/register', (req, res) => {
@@ -39,8 +51,9 @@ getRoute.get('/register', (req, res) => {
 getRoute.get('/login', (req, res) => {
     res.render('login', { title: 'Login' })
 })
-getRoute.get('/logout', (req, res) => {
-    res.render('logout', { title: 'Logout' })
+getRoute.get('/logout', publicMiddleware, (req, res) => {
+    const username = req.user ? req.user.username : null; // Use the logged-in username if available
+    res.render('logout', { title: 'Logout', username })
 })
 
 getRoute.get('/page', (req, res) => {

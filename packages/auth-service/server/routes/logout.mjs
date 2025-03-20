@@ -22,7 +22,7 @@ logoutRoute.post('/logout', (req, res) => {
         })
     ])
     console.log('Logout success', req.cookies)
-    res.redirect('/home')
+    res.redirect('/')
 })
 
 export default logoutRoute

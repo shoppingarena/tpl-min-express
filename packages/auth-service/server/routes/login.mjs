@@ -63,12 +63,13 @@ loginRoute.post('/login', upload.none(),
                     FROM user_roles
                     JOIN roles ON user_roles.role_id = roles.id
                     WHERE user_roles.user_id = ?`, [user.id])
+                // GROUP_CONCAT(roles.name) - If you want to return multiple roles as a single string (comma-separated)
                 console.log('userRole:', userRole)
                 // Generate new access and refresh tokens
                 const accessToken = await generateToken({ username, email: user.email, role: userRole.role }, '15m', secretKey)
                 const refreshToken = await generateToken({ username, email: user.email, role: userRole.role }, '7d', refreshKey)
                 // Update DB with refreshToken
-                await execute(db, `UPDATE users SET refreshToken  = '${refreshToken}' WHERE username = '${username}'`)
+                await execute(db, `UPDATE users SET refreshToken  = ? WHERE username = ?`, [refreshToken, username])
                 // Securely send cookies to client with tokens 
                 res.setHeader('Set-Cookie', [
                     cookie.serialize('accessToken', accessToken, {
