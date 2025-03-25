@@ -38,7 +38,7 @@ created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- Timestamp of OTP creation
 
 
 // OTP toggle ON | OFF
-/* User feature to enable OTP
+/* User Settings feature to enable OTP
   
 
 // Workflow for OTP

@@ -2,11 +2,11 @@ doctype html
 html
   
     include ./head.pug 
-    body(class="bg-gray-100 font-sans leading-normal tracking-normal")  
+    body(class="flex flex-col min-h-screen bg-gray-100 font-sans leading-normal tracking-normal")  
     
         include ./header.pug   
         
-        .container.mx-auto.p-6
+        .container.mx-auto.p-6.flex.flex-col.grow
             section.text-center.mb-8
                 h1.text-2xl.font-semibold.text-gray-800 About Me
                 p.mt-2 I’m Jiri Beneš, a Full-Stack JavaScript Developer
@@ -17,11 +17,11 @@ html
                 h2.text-2xl.font-semibold.text-gray-800 Let’s Connect!
                 p.mt-2 Looking for a reliable developer? Let’s work together to create a powerful digital experience.
                 .mt-4
-                a(class='text-blue-600 hover:underline' href='mailto:your.email@example.com') 📧 Email Me
+                a(class='text-blue-600 hover:underline' href='mailto:benes.jiri@shoppingarena.eu') 📧 Email Me
                 br
                 a(class='text-blue-600 hover:underline' href='https://benesjiri.com') 🌐 Visit My Website
                 br
-                a(class='text-blue-600 hover:underline' href='https://linkedin.com/in/your-profile') 🔗 LinkedIn Profile
+                a(class='text-blue-600 hover:underline' href='https://linkedin.com/in/jiri-benes-fi') 🔗 LinkedIn Profile
                 br
         include ./footer.pug
     

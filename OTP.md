@@ -122,5 +122,6 @@ Usage Consideration:
 
 Steps:
 
-1. [X]Install otplib
-2. [ ] Create Table otp_tbl
+1. - [X] Install otplib
+2. - [ ] [Create Table otp_tbl](./otp.mjs)
+3. - [ ] Create User Settings to enable OTP

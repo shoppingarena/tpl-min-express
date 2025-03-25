@@ -1,4 +1,7 @@
 // Create a new DB
+import { __dirname } from '../utils/dirname.mjs';
+import path from 'path';
+import fs from 'fs';
 import sqlite3 from 'sqlite3';
 import { execute } from './sql.mjs';
 import chalk from 'chalk';
@@ -8,7 +11,9 @@ const newDB = async (dbName) => {
     return new Promise((resolve, reject) => {
         // Navigate from 'server/db/' to 'server/database/'
         const dbDir = path.join(__dirname, '../database');
+        console.log('DB: Directory name:', dbDir)
         const dbPath = path.join(dbDir, `${dbName}.db`);
+        console.log('DB: Database path:', dbPath)
         // Ensure the database directory exists
         if (!fs.existsSync(dbDir)) {
             fs.mkdirSync(dbDir, { recursive: true });
