@@ -1,0 +1,10 @@
+include template-form
+
+div.flex.flex-col.flex-wrap.min-w-xl.max-w-xl.justify-center.items-center.h-screen.mx-auto
+      +formTemplate('/otp', 'POST', 'otp', [
+          
+          { name: 'otp', id:'id_otp',type: 'radio', label: 'One Time Password:', 
+          options: [{ value: 'OFF', label: 'OFF', checked: true },
+                    { value: 'ON', label: 'ON', checked: false }
+      ]}
+          ])

@@ -2,15 +2,15 @@
 import { authenticator } from 'otplib'
 import db from '../db/db.mjs'
 import { execute } from '../db/sql.mjs';
+import crypto from 'node:crypto'
+import dotenv from 'dotenv'
 
-const otp = async () => {
-    // 
-}
+dotenv.config()
 
 // Create Table
-const create_otp_table = async () => {
+const createOtpTable = async () => {
 
-    await db.execute(`CREATE TABLE IF NOT EXISTS otp_tbl (
+    await execute(db, `CREATE TABLE IF NOT EXISTS otp_tbl (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     otp TEXT NOT NULL,
@@ -21,9 +21,19 @@ const create_otp_table = async () => {
     );
     `)
     console.log("OTP table created.");
+
 }
 
-create_otp_table()
+const createOTPToken = async () => {
+    const otpSecret = process.env.OTP_SECRET
+        ? process.env.OTP_SECRET
+        : authenticator.generate(secret)
+}
+
+const insertOtpData = async () => {
+
+}
+createOtpTable()
 
 /* This table will store one-time passwords (OTPs) temporarily for verification.
 It includes:
@@ -38,7 +48,12 @@ created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- Timestamp of OTP creation
 
 
 // OTP toggle ON | OFF
-/* User Settings feature to enable OTP
-  
+// User Settings feature to enable OTP
+
 
 // Workflow for OTP
+
+const otp = {
+    createOtpTable,
+}
+export default otp

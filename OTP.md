@@ -122,6 +122,10 @@ Usage Consideration:
 
 Steps:
 
+otpRouter.mjs
+otp.mjs (createOtpTable, inserOtpData, createOtpSecret)
+
 1. - [X] Install otplib
-2. - [ ] [Create Table otp_tbl](./otp.mjs)
+2. - [X] [Create Table otp_tbl](./otp.mjs)
 3. - [ ] Create User Settings to enable OTP
+4. - [ ] Insert Credentials into otp_table
