@@ -1,6 +1,6 @@
 import express from 'express'
+import dotenv from 'dotenv'
 import coookieParser from 'cookie-parser'
-
 import helmet, { crossOriginResourcePolicy } from 'helmet'
 // import bcrypt from 'bcrypt' => postRouter.mjs
 import db from './server/db/db.mjs'
@@ -18,6 +18,7 @@ import routeXXX from './server/routes/routeXXX.mjs';
 import cookieParser from 'cookie-parser'
 import seedAdmin from './server/seedAdmin.mjs';
 
+dotenv.config()
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -68,7 +69,8 @@ seedAdmin().then(() => {
     console.log("Admin seeding complete. Starting server...");
 })
 
-const PORT = 3000
+// Production PORT 443
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}!`)
     console.log(`Open http://localhost:${PORT} to see the app`)
