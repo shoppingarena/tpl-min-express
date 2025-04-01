@@ -11,6 +11,7 @@ import crypto from 'node:crypto'
 import chalk from 'chalk'
 import cookie from 'cookie'
 
+
 const registerRoute = express.Router()
 
 // Create Database
@@ -50,11 +51,24 @@ registerRoute.post('/register', upload.none(),
 
                     } else {
                         const hash = await bcrypt.hash(password, saltRounds)
+                        // User Role is id 2 = user 
+                        const role = 'user'
                         //Create JWT token
-                        const accessToken = await generateToken({ username, email }, '15m', secretKey)
-                        const refreshToken = await generateToken({ username, email }, '7d', refreshKey)
+                        const accessToken = await generateToken({ username, email, role }, '15m', secretKey)
+                        const refreshToken = await generateToken({ username, email, role }, '7d', refreshKey)
 
-                        await execute(db, `INSERT INTO users(username, email, password, refreshToken) VALUES('${username}', '${email}', '${hash}', '${refreshToken}')`)
+                        const result = await execute(db, `INSERT INTO users(username, email, password, refreshToken) VALUES(?, ?, ?, ?)`,
+                            [username, email, hash, refreshToken]
+                        )
+                        const userId = result ? result.lastID : null
+                        console.log('Inserted user ID:', userId)
+                        const roleRow = await get(db, `SELECT id FROM roles WHERE name = ?`, [role])
+                        const roleId = roleRow.id
+                        console.log('roleId is:', roleId)
+                        // Insert user roles to table
+                        await execute(db, `INSERT INTO user_roles(user_id, role_id) VALUES(?, ?)`,
+                            [userId, roleId]
+                        )
 
                         //SECURE WAY TO SEND JWT TOKEN TO CLIENT AFTER REGISTRATION WITH SECURE COOKIE
                         res.setHeader('Set-Cookie', [

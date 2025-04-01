@@ -1,5 +1,7 @@
 # .env
 .end
+# database directory
+database/
 # database
 main.db
 

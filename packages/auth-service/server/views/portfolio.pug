@@ -2,21 +2,21 @@ extends page_template.pug
 
 block append main
         section(class="flex flex-col justify-center items-center text-center")
-        h1(class="text-4xl font-bold") Jiri Beneš
-        p(class="text-lg text-gray-400 mt-2") Full-Stack Developer & AI Specialist
-        a(href="#projects" class="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600") View My Work
+            h1(class="text-4xl font-bold") Jiri Beneš
+            p(class="text-lg text-gray-400 mt-2") Full-Stack Developer & AI Specialist
+            a(href="#projects" class="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600") View My Work
             
         section(class="max-w-4xl mx-auto p-8")
-        h2(class="text-2xl font-semibold mb-4 text-blue-400") About Me
-        p I specialize in backend development, authentication, and APIs. Passionate about building secure systems, integrating payment gateways, and leveraging AI solutions.
-        p(class="mt-2") Tech Stack: Node.js, Express.js, SQLite3, Firebase, OAuth2, React.js, Tailwind CSS
+            h2(class="text-2xl font-semibold mb-4 text-blue-400") About Me
+            p I specialize in backend development, authentication, and APIs. Passionate about building secure systems, integrating payment gateways, and leveraging AI solutions.
+            p(class="mt-2") Tech Stack: Node.js, Express.js, SQLite3, Firebase, OAuth2, React.js, Tailwind CSS
             
         section(class="max-w-4xl mx-auto p-8")
-        h2(class="text-2xl font-semibold mb-4 text-blue-400") Skills
-        ul.grid.grid-cols-2.gap-4.text-gray-300
-            each skill in ['Node.js', 'Express.js', 'OAuth2', 'SQLite3', 'React.js', 'Tailwind CSS', 'Stripe API', 'REST APIs']
-                li(class="bg-gray-800 p-4 rounded-lg text-center")= skill
-            
+            h2(class="text-2xl font-semibold mb-4 text-blue-400") Skills
+            ul.grid.grid-cols-2.gap-4.text-gray-300
+                each skill in ['Node.js', 'Express.js', 'OAuth2', 'SQLite3', 'React.js', 'Tailwind CSS', 'Stripe API', 'REST APIs']
+                    li(class="bg-gray-800 p-4 rounded-lg text-center")= skill
+                
         section(id="projects" class="max-w-4xl mx-auto p-8")
             h2(class="text-2xl font-semibold mb-4 text-blue-400") Projects
             div(class='grid grid-cols-1 md:grid-cols-2 gap-6')
@@ -27,6 +27,6 @@ block append main
             
         section(class="max-w-4xl mx-auto p-8 text-center")
             h2(class="text-2xl font-semibold mb-4 text-blue-400") Contact Me
-            p Email: jiri@example.com
-            p LinkedIn: linkedin.com/in/benesjiri
-            p GitHub: github.com/benesjiri
+            p Email: benes.jiri at yahoo.co.uk
+            p LinkedIn: https://www.linkedin.com/in/jiri-benes-fi/
+            p GitHub: github.com/shoppingarena

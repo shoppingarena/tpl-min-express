@@ -10,8 +10,21 @@ mixin formTemplate(action, method, id, fields)
           if field.label
             label.block.text-sky-500.font-medium.text-sm.mb-2(for=field.name)= field.label
           if field.type === 'textarea'
-            textarea(name=field.name, placeholder=field.placeholder, required=field.required, 
+            textarea( id=field.name, name=field.name, placeholder=field.placeholder, required=field.required, 
               class="w-full p-3 text-sky-500 border border-sky-400 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-300")
+          else if field.type === 'radio'
+            div.flex.justify-center.space-x-4
+            each option in field.options
+                    div.flex.items-center
+                      input(
+                        type="radio", 
+                        id=`${field.name}-${option.value}`, 
+                        name=field.name, 
+                        value=option.value,
+                        checked=option.checked,
+                        class="mr-2 text-sky-500 focus:ring-sky-500"
+                      )
+                      label.text-sky-500(for=`${field.name}-${option.value}`)= option.label
           else
             input(type=field.type, id=field.name, name=field.name, placeholder=field.placeholder, required=field.required, autocomplete= field.autocomplete,
               class="w-full p-3 text-sky-700 border border-sky-400 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-600")

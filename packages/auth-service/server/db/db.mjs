@@ -1,4 +1,7 @@
 // Create a new DB
+import { __dirname } from '../utils/dirname.mjs';
+import path from 'path';
+import fs from 'fs';
 import sqlite3 from 'sqlite3';
 import { execute } from './sql.mjs';
 import chalk from 'chalk';
@@ -6,7 +9,16 @@ import adminRoute from '../routes/admin.mjs';
 
 const newDB = async (dbName) => {
     return new Promise((resolve, reject) => {
-        const db = new sqlite3.Database(`${dbName}.db`, (err) => {
+        // Navigate from 'server/db/' to 'server/database/'
+        const dbDir = path.join(__dirname, '../database');
+        console.log('DB: Directory name:', dbDir)
+        const dbPath = path.join(dbDir, `${dbName}.db`);
+        console.log('DB: Database path:', dbPath)
+        // Ensure the database directory exists
+        if (!fs.existsSync(dbDir)) {
+            fs.mkdirSync(dbDir, { recursive: true });
+        }
+        const db = new sqlite3.Database(dbPath, (err) => {
             if (err) {
                 console.error('Error opening database:', err);
                 reject(err);
@@ -58,5 +70,5 @@ const initDB = async (newname) => {
     }
 }
 // Create and export a single 'db' instance
-const db = await initDB('a2.db');
+const db = await initDB('a3');
 export default db

@@ -6,7 +6,7 @@ import { secretKey } from "../config/auth.mjs"
 async function authVerifyMiddleware(req, res, next) {
     const cookies = cookie.parse(req.headers.cookie || "")
     console.log('AUTHMIDDLEWARE:Cookies:', cookies)
-    const authHeader = req.headers
+
     //console.log('AUTHMIDDLEWARE:Auth Header:', authHeader)
 
     // Fix: Use the correct cookie name (ensure this matches what you set in login/refresh)
@@ -24,7 +24,7 @@ async function authVerifyMiddleware(req, res, next) {
         console.log('AUTHMIDDLEWARE: Attempting to verify token...')
         const { payload } = await jwtVerify(token, keyBytes)
         console.log('AUTHMIDDLEWARE:Verification Successful! Payload:', payload)
-        req.user = payload.user // Store user info in rew.user
+        req.user = payload.user // Store user info in req.user
         console.log('AUTHMIDDLEWARE: req.user:', req.user)
         next()
     } catch (err) {

@@ -1,0 +1,17 @@
+extends page_template.pug 
+include template-form
+
+block append main
+
+    +formTemplate(action, method, id, [
+              { name: 'to', id:'to', type: 'email', label: 'To', placeholder: 'Enter your email', required: true, autocomplete:'email' },
+              { name: 'subject', id:'subject', type: 'text', label: 'Subject', placeholder: 'Enter trhe subject', required: true, autocomplete: 'off' },
+              { name: 'message', id:'message', type: 'textarea', maxlength: '1000', label: 'Message', placeholder: 'Enter your message', required: true, autocomplete: 'off' },
+              ])
+
+              a(href="/" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800") Cancel
+    div(class="mt-4")
+        if error
+            p(class="text-red-500")= error
+        if success
+            p(class="text-green-500")= success  
