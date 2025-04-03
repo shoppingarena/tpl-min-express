@@ -5,17 +5,16 @@
   "main": "loader.cjs",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"nodemon app.js\" \"pnpx @tailwindcss/cli -i ./static/input.css -o ./static/output.css --watch\"",
-    "start": "node app.js",
-    "test": "playwright test",
-    "css": "pnpx @tailwindcss/cli -i ./static/input.css -o ./static/output.css --watch"
+    "start": "node loader.cjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@parcel/watcher": "^2.5.1",
     "@tailwindcss/cli": "^4.0.4",
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^5.1.0",
+    "bcryptjs": "^3.0.2",
     "body-parser": "^1.20.3",
     "chalk": "^5.4.1",
     "concurrently": "^9.1.2",
@@ -23,6 +22,7 @@
     "cookie": "^1.0.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
+    "esm": "^3.2.25",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "helmet": "^8.0.0",
