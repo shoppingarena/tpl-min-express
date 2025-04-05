@@ -14,8 +14,8 @@ emailRouter.get('/send-email', (req, res) => {
 })
 
 emailRouter.post('/send-email', urlencodedParser,
-
     async (req, res) => {
+        log(chalk.yellow('POST /SEND-EMAIL'))
         const { to, subject, text } = req.body
         log(chalk.green('to: %s, subject: %s, text: %s'), to, subject, text)
         await sendEmail(to, subject, text)

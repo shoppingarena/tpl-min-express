@@ -18,10 +18,17 @@ import routeXXX from './server/routes/routeXXX.mjs';
 import cookieParser from 'cookie-parser'
 import seedAdmin from './server/seedAdmin.mjs';
 
+// Load environment variables based on NODE_ENV
+const envFile = process.env.NODE_ENV === 'production'
+    ? '.env.production'
+    : '.env.development';
+
 dotenv.config()
 //TO-DO rewrite to node:path only, https://nodejs.org/en/learn/manipulating-files/nodejs-file-paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 console.log('Directory name:', __dirname);
 
@@ -71,6 +78,9 @@ seedAdmin().then(() => {
 
 // Production PORT 443
 const PORT = process.env.PORT || 3000;
+
+console.log(`Server starting on port ${PORT} in ${process.env.NODE_ENV} mode`);
+
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}!`)
     console.log(`Open http://localhost:${PORT} to see the app`)
