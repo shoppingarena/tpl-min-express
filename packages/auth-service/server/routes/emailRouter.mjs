@@ -19,7 +19,10 @@ emailRouter.post('/send-email', urlencodedParser,
         const { to, subject, text } = req.body
         log(chalk.green('to: %s, subject: %s, text: %s'), to, subject, text)
         await sendEmail(to, subject, text)
-        res.json({ message: 'Email sent successfully' })
+        return res.status(200).json({
+            message: 'Email sent successfully',
+            redirect: '/send-email'
+        });
     })
 
 export default emailRouter

@@ -5,7 +5,7 @@
   "main": "loader.cjs",
   "type": "module",
   "scripts": {
-    "start": "NOVE_ENV=development node loader.cjs"
+    "start": "NODE_ENV=development node loader.cjs"
   },
   "keywords": [],
   "author": "",

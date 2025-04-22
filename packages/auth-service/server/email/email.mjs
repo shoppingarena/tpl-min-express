@@ -1,32 +1,31 @@
+// email.mjs
 // Sending emails with Nodemailer
-
+import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
-import chalk from 'chalk';
+import { fileURLToPath } from 'node:url';
+import path, { dirname } from 'node:path';
 
-const log = console.log
+const log = console.log;
 
+// Load environment variables first
+dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Determine which .env file to use based on the environment
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: path.resolve(process.cwd(), envFile) });
+
+// Create transporter with credentials from environment variables
 const transporter = nodemailer.createTransport({
     host: 'mail.shoppingarena.net',
     port: 465,
     secure: true,
     auth: {
-        user: 'noreplay@shoppingarena.net',
-        pass: process.env.EMAIL_PASSWORD_NET,
+        user: process.env.EMAIL_USERNAME || 'noreplay@shoppingarena.net', // You can set this to your actual email or another placeholder
+        pass: process.env.EMAIL_PASSWORD,
     },
-})
+});
 
-export async function sendEmail(to, subject, text) {
-    try {
-        const info = await transporter.sendMail({
-            from: '"Shopping Arena" <noreplay@shoppingarena.net>',
-            to: to,
-            subject: subject,
-            text: text,
-
-        })
-        log(chalk.bgGreen("Message sent: %s"), info.messageId)
-    } catch (error) {
-        console.error('Error sending email:', error)
-    }
-}
-export default sendEmail;
+// Export transporter for usage in other modules
+export default transporter;

@@ -79,5 +79,9 @@ getRoute.get('/settings', authVerifyMiddleware, authorizeRoles('user'), (req, re
     const role = req.user ? req.user.role : null
     res.render('settings', { title: 'Settings', username: username, role: role })
 })
-
+getRoute.get('/profile', authVerifyMiddleware, authorizeRoles('user'), (req, res) => {
+    const username = req.user ? req.user.username : null; // Use the logged-in username if available
+    const role = req.user ? req.user.role : null
+    res.render('profile', { title: 'Profile', username: username, role: role })
+})
 export default getRoute;
