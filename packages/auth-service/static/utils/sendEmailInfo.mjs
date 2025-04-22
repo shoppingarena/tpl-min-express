@@ -1,8 +1,4 @@
 // sendEmailInfo.mjs
-import fetch from 'fetch';
-import { FormData } from 'form-data';
-import url from 'url';
-
 document.addEventListener('DOMContentLoaded', function (event) {
     const form = document.getElementById('sendEmail');
     const errorMessage = document.getElementById('email-error-message');
@@ -16,12 +12,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
         try {
             const response = await fetch('/send-email', {
                 method: 'POST',
-                body: JSON.stringify({
-                    to: encodeURIComponent(formData.get('to')),
-                    subject: encodeURIComponent(formData.get('subject')),
-                    text: formData.get('text')
+                body: formData
                 })
-            });
+            
 
             const data = await response.json();
 
