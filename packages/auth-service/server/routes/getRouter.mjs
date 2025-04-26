@@ -63,8 +63,9 @@ getRoute.get('/logout', publicMiddleware, (req, res) => {
 getRoute.get('/page', (req, res) => {
     res.render('page')
 })
-getRoute.get('/dashboard', (req, res) => {
-    res.render('dashboard')
+getRoute.get('/dashboard', authVerifyMiddleware, authorizeRoles('admin'), (req, res) => {
+    const username = req.user ? req.user.username : null; // Use the logged-in username if available
+    res.render('dashboard', { title: 'Dashboard', username })
 })
 getRoute.get('/icons', (req, res) => {
     res.render('icons', { title: 'Icons' })
@@ -79,9 +80,9 @@ getRoute.get('/settings', authVerifyMiddleware, authorizeRoles('user'), (req, re
     const role = req.user ? req.user.role : null
     res.render('settings', { title: 'Settings', username: username, role: role })
 })
-getRoute.get('/profile', authVerifyMiddleware, authorizeRoles('user'), (req, res) => {
+getRoute.get('/user', authVerifyMiddleware, authorizeRoles('user', 'admin'), (req, res) => {
     const username = req.user ? req.user.username : null; // Use the logged-in username if available
     const role = req.user ? req.user.role : null
-    res.render('profile', { title: 'Profile', username: username, role: role })
+    res.render('user', { title: 'User', username: username, role: role })
 })
 export default getRoute;

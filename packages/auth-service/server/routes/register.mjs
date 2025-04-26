@@ -10,6 +10,7 @@ import bcrypt from 'bcrypt'
 import crypto from 'node:crypto'
 import chalk from 'chalk'
 import cookie from 'cookie'
+import sendRegisterEmail from '../email/registerEmail.mjs'
 
 
 const registerRoute = express.Router()
@@ -86,6 +87,15 @@ registerRoute.post('/register', upload.none(),
                                 maxAge: 60 * 60 * 24 * 7, // Token expiration time in seconds (7 days) 604800
                                 path: '/'// Cookie path available for all routes
                             })])
+                        //Send Email after successful registration
+                        const urlRoute = 'https://portfolio.benes.fi/login'
+                        await sendRegisterEmail(email, 'Welcome to Shopping Arena!',
+                            {
+                                username: username,
+                                email: email,
+                                url: urlRoute
+                            }
+                        )
                         // return res.status(201).json({ message: 'Registration successful', token: jwt, redirect: '/home' });
                         return res.status(201).json({ message: 'Registration successful', redirect: '/home' })
                         //res.redirect('/home')

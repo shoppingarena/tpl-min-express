@@ -1,0 +1,7 @@
+//- file: 'user.pug' , Pug Template Engine
+extends page_template.pug
+
+block append main
+        section(class="flex flex-col grow justify-center items-center text-center")
+            h1(class="text-4xl font-bold") Hello #{username}!
+            a(href="/send-email") Send email

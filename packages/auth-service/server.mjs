@@ -17,6 +17,14 @@ import emailRouter from './server/routes/emailRouter.mjs';
 import routeXXX from './server/routes/routeXXX.mjs';
 import cookieParser from 'cookie-parser'
 import seedAdmin from './server/seedAdmin.mjs';
+import http from 'http';
+import os from 'os';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+// Create the promisified version of exec
+const execAsync = promisify(exec);
+
 
 // Load environment variables based on NODE_ENV
 const envFile = process.env.NODE_ENV === 'production'
@@ -31,6 +39,35 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 console.log('Directory name:', __dirname);
+
+// Get local IP address
+function getLocalIP() {
+    const interfaces = os.networkInterfaces();
+    for (const interfaceName in interfaces) {
+        const networkInterface = interfaces[interfaceName];
+        for (const iface of networkInterface) {
+            // Skip over non-IPv4 and internal interfaces
+            if (iface.family === 'IPv4' && !iface.internal) {
+                return iface.address;
+            }
+        }
+    }
+    return 'localhost'; // Fallback
+}
+
+// Get Windows host IP when running in WSL
+async function getWindowsHostIP() {
+    try {
+        // This typically works in WSL to get the Windows host IP
+        const { stdout } = await execAsync('cat /etc/resolv.conf | grep nameserver | awk \'{print $2}\'');
+        return stdout.trim();
+    } catch (error) {
+        console.error('Failed to get Windows host IP:', error);
+        return 'localhost';
+    }
+}
+
+const localIP = getLocalIP();
 
 const app = express()
 app.use(cookieParser())
@@ -81,7 +118,24 @@ const PORT = process.env.PORT || 3000;
 
 console.log(`Server starting on port ${PORT} in ${process.env.NODE_ENV} mode`);
 
-app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}!`)
-    console.log(`Open http://localhost:${PORT} to see the app`)
-})
+
+// Listen on all interfaces (0.0.0.0)
+app.listen(PORT, '0.0.0.0', async () => {
+    console.log(`Server running at:`);
+    console.log(`- http://localhost:${PORT}`);
+    console.log(`- http://${localIP}:${PORT}`);
+
+    // If running in WSL, also show Windows host IP
+    try {
+        const isWSL = process.platform === 'linux' &&
+            (process.env.WSL_DISTRO_NAME || process.env.IS_WSL);
+
+        if (isWSL) {
+            const windowsIP = await getWindowsHostIP();
+            console.log(`- Windows host: http://${windowsIP}:${PORT}`);
+        }
+    } catch (error) {
+        console.error('Error checking WSL environment:', error);
+    }
+});
+
